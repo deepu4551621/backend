@@ -5,20 +5,23 @@ const pool = new Pool({
       rejectUnauthorized: false,
     },
   });
-  const createUser = (request, response) => {
+  const createUser =  (request, response) => {
     const { name, email,password } = request.body;
     console.log(name)
-    // Descritpion for this syntax below
-    pool.query(
-      `INSERT INTO users (name, email) VALUES ($1, $2, $3) RETURNING id`,
-      [name, email, password],
-      (error, results) => {
-        if (error) {
-          throw error;
-        }
-        response.status(201).send(`User added with ID: ${results.rows[0].id}`);
-      }
-    );
+    try {
+        pool.query(
+            `INSERT INTO users (name, email) VALUES ($1, $2, $3) RETURNING id`,
+            [name, email, password],
+            (error, results) => {
+              if (error) {
+                throw error;
+              }
+              response.status(201).send(`User added with ID: ${results.rows[0].id}`);
+            }
+          );
+    } catch (error) {
+        response.json(error);
+    }
   };
 const getUsers = (request, response) => {
     pool.query("SELECT * FROM users ORDER BY id ASC", (error, results) => {

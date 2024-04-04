@@ -29,7 +29,7 @@ const Register = () => {
 //     return;
 // }
     try {                      
-        const Response = await axios.post('/signup', formData )  
+        const Response = await axios.post('https://backend-omega-orpin.vercel.app/signup', formData )  
         if(Response.data.error){
           toast.error(Response.data.error)
         } else{
