@@ -47,8 +47,7 @@ console.log(password, user.password)
       return res.status(401).json({ success: false, error: 'Incorrect credentials' });
     }
   } catch (error) {
-    console.error('Error logging in:', error);
-    res.status(500).json({ ErrorLogging: error });
+    res.json(error);
   }
 };
 
