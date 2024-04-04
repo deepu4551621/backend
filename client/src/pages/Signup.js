@@ -13,7 +13,6 @@ const Register = () => {
     name: '',
     email: '',
     password: '',
-    cpassword: ''
   });
   const [err,setErr]=useState('');
   const handleChange = (e) => {
@@ -22,6 +21,7 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+   const toastId= toast.loading("saving userdata...")
     try {                      
         const Response = await axios.post('https://backend-omega-orpin.vercel.app/signup', formData )  
         if(Response.status === 200) {
@@ -32,14 +32,17 @@ const Register = () => {
           //   password: '',
           //   cpassword: ''
           // });
+          toast.dismiss(toastId)
           toast.success('Registration Successful');
-          navigate('/login');
+          // navigate('/login');
         } else {
+          toast.dismiss(toastId)
           // Handle unexpected response
           console.error('Unexpected response:', Response);
           toast.error('Registration failed. Please try again later.');
         }         
     } catch (error) {
+      toast.dismiss(toastId)
       console.error("failed to Register", error);
     }
   };

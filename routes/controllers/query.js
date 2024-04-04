@@ -1,22 +1,24 @@
 const {Pool} = require('pg')
+const hash = require('../middlewares/hashpassword')
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
       rejectUnauthorized: false,
     },
   });
-  const createUser = (request, response) => {
+  const createUser = async(request, response) => {
     const { name, email, password } = request.body;
-    console.log(name);
+    let hashedPassword =  await hash(password)
+    console.log("create",hashedPassword)
     try {
       pool.query(
         `INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id`,
-        [name, email, password],
+        [name, email, hashedPassword],
         (error, results) => {
           if (error) {
             throw error;
           }
-          response.status(201).send(`User added with ID: ${results.rows[0].id}`);
+          response.status(201).json(`User added with ID: ${results.rows[0].id}`);
         }
       );
     } catch (error) {
