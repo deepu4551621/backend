@@ -17,7 +17,7 @@ const hashPasswordMiddleware = async (req, res, next) => {
     req.body.password = hashedPassword;
     
     // Pass control to the next middleware or route handler
-    // next();
+    next();
   } catch (error) {
     // Handle error
     next(error);
