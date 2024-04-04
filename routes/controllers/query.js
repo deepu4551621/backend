@@ -10,7 +10,7 @@ const pool = new Pool({
     console.log(name)
     // Descritpion for this syntax below
     pool.query(
-      `INSERT INTO users (name, email) VALUES ($1, $2) RETURNING id`,
+      `INSERT INTO users (name, email) VALUES ($1, $2, $3) RETURNING id`,
       [name, email, password],
       (error, results) => {
         if (error) {
