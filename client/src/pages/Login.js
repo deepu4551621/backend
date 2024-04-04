@@ -22,18 +22,20 @@ const handleSubmit = async (e) => {
     const toastId = toast.loading('logging...');
     try {
         const response = await axios.post('https://backend-omega-orpin.vercel.app/login', formData);
-    console.log('res', response)
-        if(!response.data){
-          toast.error('no response')
-        }
-        else{
-          setFormData({})
+         const data = response.json()
+         console.log('dataTjson', data, )
+        if(response.status===200){
+          setFormData({
+            name: '',
+            email: '',
+            password: '',
+          });
           navigate('/', response.data);
           toast.success(response.data.message,{
             position:'top-center'
           })
           toast.dismiss(toastId)
-        }  
+        }
     } catch (error) {
       toast.dismiss(toastId)
       toast.error('backend server not running')
