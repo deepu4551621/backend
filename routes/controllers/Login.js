@@ -48,7 +48,7 @@ console.log(password, user.password)
     }
   } catch (error) {
     console.error('Error logging in:', error);
-    res.status(500).json({ error: 'Internal server error' });
+    res.status(500).json({ ErrorLogging: error });
   }
 };
 
