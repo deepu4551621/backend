@@ -1,0 +1,75 @@
+body{
+  margin: 0;
+}
+.navbar{
+  /* background-color: aquamarine; */
+  display: flex;
+  justify-content: space-between;
+  margin: 10px;
+  border-radius: 5px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
+}
+.logo{
+  background-color: azure;
+}
+.navbar ul{
+  flex: 3;
+  display: flex;
+  justify-content: space-evenly;
+  list-style: none;
+}
+.navbar ul a{
+  text-decoration: none;
+}
+
+/* styles for login/signup page */
+/* Signup.css */
+.signup-container {
+  max-width: 50%;
+  /* height: 100vh; */
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff67;
+  border-radius: 5px;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+
+}
+h2 {
+  text-align: center;
+  margin-bottom: 20px;
+}
+.icon{
+  align-self: center;
+}
+.form-group {
+  padding: 15px;
+  display: flex;
+}
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+input[type="password"] {
+  width: 100%;
+  padding: 10px;
+  margin: 5px 0;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  transition: border-color 0.3s ease-in-out;
+}
+
+button[type="submit"] {
+  width: 100%;
+  background-color: #007bff;
+  color: #fff;
+  padding: 10px;
+  border: none;
+  border-radius: 3px;
+  cursor: pointer;
+  transition: background-color 0.3s ease-in-out;
+}
+
+@media (max-width: 576px) {
+  .signup-container {
+    max-width: 90%;
+  }
+}
