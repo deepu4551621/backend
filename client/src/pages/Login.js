@@ -23,9 +23,10 @@ const handleSubmit = async (e) => {
     try {
         const response = await axios.post('https://backend-omega-orpin.vercel.app/login', formData);
     console.log('res', response)
-        if(response.data.error){
-          toast.error(response.data.error)
-        }else{
+        if(!response.data){
+          toast.error('no response')
+        }
+        else{
           setFormData({})
           navigate('/', response.data);
           toast.success(response.data.message,{

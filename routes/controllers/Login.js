@@ -40,8 +40,7 @@ console.log(password, user.password)
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'strict',
       });
-
-      return res.status(200).json({ status: true, data: { id, name, email, created_at, updated_at } });
+return res.status(200).json({ login: 'Login successful', data:[ id, name, email, created_at, updated_at ]});
     } else {
       // If passwords don't match, return an error
       return res.status(401).json({ success: false, error: 'Incorrect credentials' });
