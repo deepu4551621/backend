@@ -19,9 +19,9 @@ const Login = () => {
 
 const handleSubmit = async (e) => {
     e.preventDefault();
-    const toastId = toast.loading('Loading...');
+    const toastId = toast.loading('logging...');
     try {
-        const response = await axios.post('/login', formData);
+        const response = await axios.post('https://backend-omega-orpin.vercel.app/login', formData);
     console.log('res', response)
         if(response.data.error){
           toast.error(response.data.error)

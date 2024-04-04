@@ -1,29 +1,32 @@
 const {Pool} = require('pg')
-
+const bcrypt =require('bcrypt')
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: {
       rejectUnauthorized: false,
     },
   });
-  const createUser = (request, response) => {
+  const createUser = async (request, response) => {
     const { name, email, password } = request.body;
-    try {
-        console.log("create",password)
-      pool.query(
+    const saltRounds = 10; // Number of salt rounds (higher is more secure but slower)
+    const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+    // Insert user into the database with hashed password
+    pool.query(
         `INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id`,
-        [name, email, password],
+        [name, email, hashedPassword],
         (error, results) => {
-          if (error) {
-            throw error;
-          }
-          response.status(201).json(`User added with ID: ${results.rows[0].id}`);
+            if (error) {
+                // Handle database error
+                console.error('Error inserting user:', error.detail);
+                return response.status(500).json({ message:error.detail });
+            }
+            // Send success response
+            response.status(201).json({ message: `User added with ID: ${results.rows[0].id}` });
         }
-      );
-    } catch (error) {
-      response.json(error);
-    }
-  };
+    );
+};
+
 const getUsers = (request, response) => {
     pool.query("SELECT * FROM users ORDER BY id ASC", (error, results) => {
       if (error) {

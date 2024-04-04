@@ -24,7 +24,7 @@ const Register = () => {
    const toastId= toast.loading("saving userdata...")
     try {                      
         const Response = await axios.post('https://backend-omega-orpin.vercel.app/signup', formData )  
-        if(Response.status === 200) {
+        if(Response.status === 201) {
           // Registration successful
           // setFormData({
           //   name: '',
