@@ -1,7 +1,7 @@
 const {Pool} = require('pg')
 const bcrypt =require('bcrypt')
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: process.env.VERCELDB_URL,
     ssl: {
       rejectUnauthorized: false,
     },
