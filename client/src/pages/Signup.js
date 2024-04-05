@@ -35,24 +35,25 @@ const Register = () => {
             toast.success('Registration Successful');
             // navigate('/login');
         }
-        console.log('Response back from server:', response.data);
+        console.log('Response back from server:', response);
     } catch (error) {
         toast.dismiss(toastId);
         if (error.response) {
             // Server responded with an error status code
-            console.log("Error registering:", error.response.data);
+            console.error("Error registering:", error.response.data);
             toast.error(error.response.data.message || 'An error occurred');
         } else if (error.request) {
             // The request was made but no response was received
-            console.log("No response received:", error.request);
+            console.error("No response received:", error.request);
             toast.error('No response received from server');
         } else {
             // Something happened in setting up the request that triggered an error
-            console.log("Request error:", error.message);
+            console.error("Request error:", error.message);
             toast.error('Request error: ' + error.message);
         }
     }
 };
+
 
 
   return (
