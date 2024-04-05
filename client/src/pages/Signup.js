@@ -19,27 +19,29 @@ const Register = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async () => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     const toastId = toast.loading("Saving user data...");
     try {
       const res = await axios.post('https://backend-omega-orpin.vercel.app/signup', formData);
-        const data =  await res.json();
-        console.log("response from server",data );
+        // const data =  await res.json();
+        console.log("response from server",res );
         
-        // if (response.status === 201) {
-        //     // Registration successful
-        //     setFormData({
-        //         name: '',
-        //         email: '',
-        //         password: '',
-        //     });
-        //     toast.dismiss(toastId);
-        //     toast.success('Registration Successful');
-        //     // navigate('/login');
-        // }
-    } catch (error) {
+        if (res.status === 201) {
+            // Registration successful
+            setFormData({
+                name: '',
+                email: '',
+                password: '',
+            });
+            toast.dismiss(toastId);
+            toast.success('Registration Successful');
+            // navigate('/login');
+        }
+    } catch (e) {
       toast.dismiss(toastId);
-     console.log('error registering', error)
+      toast.error(e.response.data.message, {duration:3000})
+     console.log('error registering', e.response.data.message)
     }
 };
 

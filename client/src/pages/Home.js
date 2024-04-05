@@ -4,12 +4,13 @@ const Home = () => {
   const location = useLocation()
   const data = location?.state;
   const arr =[1,2,3]
-
+console.log("data", data);
   return (
     <div>
 <h1>Home</h1>
-
-<p>{data}</p>
+   {
+    data?<h1>{data.message}</h1>:null
+   }
     </div>
   )
 }
