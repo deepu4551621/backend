@@ -38,7 +38,7 @@ const Register = () => {
         }        
     } catch (error) {
       toast.dismiss(toastId)
-      toast.error(error.response.data.message);
+      toast.error("Error",error?.response.data.message);
     }
   };
 
