@@ -6,7 +6,6 @@ import { RiLockPasswordLine } from 'react-icons/ri';
 import {BsPerson} from 'react-icons/bs';
 import {MdOutlineAlternateEmail} from 'react-icons/md';
 import {toast} from 'react-hot-toast'
-import { response } from 'express';
 
 const Register = () => {
   const navigate = useNavigate();
