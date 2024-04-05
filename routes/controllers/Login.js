@@ -24,24 +24,18 @@ const Login = async (req, res) => {
     }
 
     const user = rows[0];
-console.log(password, user.password)
+// console.log(password, user.password)
     // Compare the provided password with the stored hashed password
-    const passwordMatch = await comparePassword(password, user.password);
+    const passwordMatch = comparePassword(password, user.password);
 
     if (passwordMatch) {
       const { id, name, email, created_at, updated_at } = user;
 
       // If passwords match, generate and return an access token
       const accessToken = jwt.sign({ id, name, email }, accessTokenKey, { expiresIn: '1h' });
-
-      // Set the access token as an HTTP-only cookie
-      res.cookie('aToken', accessToken, {
-        httpOnly: true,
-        secure: process.env.NODE_ENV === 'production',
-        sameSite: 'strict',
-      });
-      res.status(200).json({
+    return res.status(200).json({
         message: 'Login successful',
+        accessToken,
         data: {
           id,
           name,
