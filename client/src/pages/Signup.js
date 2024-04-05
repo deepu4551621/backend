@@ -21,27 +21,39 @@ const Register = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-   const toastId= toast.loading("saving userdata...")
-    try {                      
-        const Response = await axios.post('https://backend-omega-orpin.vercel.app/signup', formData )  
-        if(Response.status === 201) {
-          // Registration successful
-          setFormData({
-            name: '',
-            email: '',
-            password: '',
-          });
-          toast.dismiss(toastId)
-          toast.success('Registration Successful');
-          // navigate('/login');
-        }      
-        console.log('response back from server:',Response)  
+    const toastId = toast.loading("Saving user data...");
+    try {
+        const response = await axios.post('https://backend-omega-orpin.vercel.app/signup', formData);
+        if (response.status === 201) {
+            // Registration successful
+            setFormData({
+                name: '',
+                email: '',
+                password: '',
+            });
+            toast.dismiss(toastId);
+            toast.success('Registration Successful');
+            // navigate('/login');
+        }
+        console.log('Response back from server:', response.data);
     } catch (error) {
-      toast.dismiss(toastId)
-      console.log("eror registering",error.response.data)
-      toast.error(error);
+        toast.dismiss(toastId);
+        if (error.response) {
+            // Server responded with an error status code
+            console.log("Error registering:", error.response.data);
+            toast.error(error.response.data.message || 'An error occurred');
+        } else if (error.request) {
+            // The request was made but no response was received
+            console.log("No response received:", error.request);
+            toast.error('No response received from server');
+        } else {
+            // Something happened in setting up the request that triggered an error
+            console.log("Request error:", error.message);
+            toast.error('Request error: ' + error.message);
+        }
     }
-  };
+};
+
 
   return (
     <div className="signup-container">
