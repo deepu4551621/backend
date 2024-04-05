@@ -24,7 +24,7 @@ const handleSubmit = async (e) => {
         const response = await axios.post('https://backend-omega-orpin.vercel.app/login', formData);
          const data = response.json()
          console.log('dataTjson', data, )
-         console.log('response', response)
+        //  console.log('response', response)
         if(response.status===200){
           setFormData({
             name: '',
@@ -32,7 +32,7 @@ const handleSubmit = async (e) => {
             password: '',
           });
           navigate('/', response.data);
-          toast.success(response.data.message,{
+          toast.success(data.message,{
             position:'top-center'
           })
           toast.dismiss(toastId)

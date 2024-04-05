@@ -22,9 +22,10 @@ const Register = () => {
   const handleSubmit = async () => {
     const toastId = toast.loading("Saving user data...");
     try {
-        await axios.post('https://backend-omega-orpin.vercel.app/signup', formData).then((res)=>{
- console.log("response from server", res.json());
-        })
+      const res = await axios.post('https://backend-omega-orpin.vercel.app/signup', formData);
+        const data =  await res.json();
+        console.log("response from server",data );
+        
         // if (response.status === 201) {
         //     // Registration successful
         //     setFormData({
@@ -36,28 +37,9 @@ const Register = () => {
         //     toast.success('Registration Successful');
         //     // navigate('/login');
         // }
-        console.log('Response back from server:', response);
     } catch (error) {
       toast.dismiss(toastId);
-      if (error.response) {
-        // Server responded with an error status code
-        if (error.response.status === 400) {
-          // Bad request
-          console.log("Bad request:", error.response.data);
-          toast.error(error.response.data.message || 'Bad request');
-        } else {
-          console.log("Error registering:", error.response.data);
-          toast.error(error.response.data.message || 'An error occurred');
-        }
-      } else if (error.request) {
-        // The request was made but no response was received
-        console.log("No response received:", error.request);
-        toast.error('No response received from server');
-      } else {
-        // Something happened in setting up the request that triggered an error
-        console.log("Request error:", error.message);
-        toast.error('Request error: ' + error.message);
-      }
+     console.log('error registering', error)
     }
 };
 
