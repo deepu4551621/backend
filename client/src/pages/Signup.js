@@ -22,18 +22,20 @@ const Register = () => {
   const handleSubmit = async () => {
     const toastId = toast.loading("Saving user data...");
     try {
-        const response = await axios.post('https://backend-omega-orpin.vercel.app/signup', formData);
-        if (response.status === 201) {
-            // Registration successful
-            setFormData({
-                name: '',
-                email: '',
-                password: '',
-            });
-            toast.dismiss(toastId);
-            toast.success('Registration Successful');
-            // navigate('/login');
-        }
+        await axios.post('https://backend-omega-orpin.vercel.app/signup', formData).then((res)=>{
+ console.log("response from server", res);
+        })
+        // if (response.status === 201) {
+        //     // Registration successful
+        //     setFormData({
+        //         name: '',
+        //         email: '',
+        //         password: '',
+        //     });
+        //     toast.dismiss(toastId);
+        //     toast.success('Registration Successful');
+        //     // navigate('/login');
+        // }
         console.log('Response back from server:', response);
     } catch (error) {
         toast.dismiss(toastId);

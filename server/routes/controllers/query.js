@@ -18,7 +18,7 @@ const pool = new Pool({
         (error, results) => {
             if (error) {
                 // Handle database error
-                console.log('Error inserting user:', error.detail);
+                // console.log('Error inserting user:', error.detail);
                 return response.status(500).json({message:error.detail});
             }
             // Send success response
