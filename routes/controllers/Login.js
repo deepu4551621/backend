@@ -5,7 +5,7 @@ const accessTokenKey = process.env.ACT_SECRETKEY;
 // const comparePassword = require('../middlewares/compareHpassword');
 
 const pool = new Pool({
-  connectionString: process.env.VERCELDB_URL,
+  connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
   },
