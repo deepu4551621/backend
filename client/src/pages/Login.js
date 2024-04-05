@@ -39,7 +39,7 @@ const handleSubmit = async (e) => {
         }
     } catch (error) {
       toast.dismiss(toastId)
-      toast.error('backend server not running')
+      toast.error(error.response.data.message);
       console.log("ERROR:",error)
 
     }

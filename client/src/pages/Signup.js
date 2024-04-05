@@ -35,16 +35,10 @@ const Register = () => {
           toast.dismiss(toastId)
           toast.success('Registration Successful');
           // navigate('/login');
-        } else {
-          // if(Response.status===500)
-          toast.dismiss(toastId)
-          // Handle unexpected response
-          console.log('Unexpected response:', Response.message);
-          toast.error(Response.message);
-        }         
+        }        
     } catch (error) {
       toast.dismiss(toastId)
-      console.log("failed to Register", error);
+      toast.error(error.response.data.message);
     }
   };
 
