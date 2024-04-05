@@ -34,10 +34,12 @@ const Register = () => {
           toast.dismiss(toastId)
           toast.success('Registration Successful');
           // navigate('/login');
-        }        
+        }      
+        console.log('response back from server:',Response)  
     } catch (error) {
       toast.dismiss(toastId)
-      toast.error(error.response.data.message);
+      console.log("eror registering",error.response.data)
+      toast.error(error);
     }
   };
 
