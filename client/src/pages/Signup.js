@@ -6,6 +6,7 @@ import { RiLockPasswordLine } from 'react-icons/ri';
 import {BsPerson} from 'react-icons/bs';
 import {MdOutlineAlternateEmail} from 'react-icons/md';
 import {toast} from 'react-hot-toast'
+import { response } from 'express';
 
 const Register = () => {
   const navigate = useNavigate();
@@ -35,14 +36,15 @@ const Register = () => {
           toast.success('Registration Successful');
           // navigate('/login');
         } else {
+          // if(Response.status===500)
           toast.dismiss(toastId)
           // Handle unexpected response
-          console.error('Unexpected response:', Response);
-          toast.error('Registration failed. Please try again later.');
+          console.log('Unexpected response:', Response.message);
+          toast.error(Response.message);
         }         
     } catch (error) {
       toast.dismiss(toastId)
-      console.error("failed to Register", error);
+      console.log("failed to Register", error);
     }
   };
 
