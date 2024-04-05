@@ -1,7 +1,7 @@
 const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
-const accessTokenKey = process.env.ACT_SECRETKEY
+const accessTokenKey = process.env.ACT_SECRETKEY;
 const comparePassword = require('../middlewares/compareHpassword');
 
 const pool = new Pool({
@@ -12,44 +12,34 @@ const pool = new Pool({
 });
 
 const Login = async (req, res) => {
-  const { email, password } = req.body;
-
   try {
+    const { email, password } = req.body;
+
     // Check if the email exists
     const { rows } = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
-
     if (rows.length === 0) {
-      // If email doesn't exist, return an error
-      return res.status(404).json({ error: 'Incorrect credentials' });
+      return res.status(404).json({ error: 'Incorrect email' });
     }
 
     const user = rows[0];
-// console.log(password, user.password)
-    // Compare the provided password with the stored hashed password
-    const passwordMatch = comparePassword(password, user.password);
-
-    if (passwordMatch) {
-      const { id, name, email, created_at, updated_at } = user;
-
-      // If passwords match, generate and return an access token
-      const accessToken = jwt.sign({ id, name, email }, accessTokenKey, { expiresIn: '1h' });
-    return res.status(200).json({
-        message: 'Login successful',
-        accessToken,
-        data: {
-          id,
-          name,
-          email,
-          created_at,
-          updated_at,
-        },
-      });
-    } else {
-      // If passwords don't match, return an error
-      return res.status(401).json({ success: false, error: 'Incorrect credentials' });
+  
+    const passwordMatch = await bcrypt.compare(password, user.password);
+    // console.log('ismatch',passwordMatch);
+    if (!passwordMatch) {
+      return res.status(401).json({ login: false, error: 'Incorrect password' });
     }
+    // If passwords match, generate and return an access token
+    const { id, name, created_at, updated_at } = user;
+    const accessToken = jwt.sign({ id, name, email }, accessTokenKey, { expiresIn: '1h' });
+
+    res.status(200).json({
+      message: 'Login successful',
+      accessToken,
+      data: { id, name, email, created_at, updated_at }
+    });
   } catch (error) {
-    res.json(error);
+    console.error('Error during login:', error);
+    res.status(500).json({ error: 'Internal server error' });
   }
 };
 
