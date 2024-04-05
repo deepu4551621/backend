@@ -11,16 +11,23 @@ const pool = new Pool({
     const saltRounds = 10; // Number of salt rounds (higher is more secure but slower)
     const hashedPassword = await bcrypt.hash(password, saltRounds);
 
+    const result = await pool.query(
+      `SELECT * FROM users WHERE email = $1`,
+      [email]
+    );
+
+    if (result.rowCount > 0) {
+      // Email already exists, send error response
+      return response.status(400).json({ message: 'Email already exists' });
+    }
     // Insert user into the database with hashed password
     pool.query(
         `INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id`,
         [name, email, hashedPassword],
-        (error, results) => {
-            if (error) {
-                // Handle database error
-                // console.log('Error inserting user:', error.detail);
-                return response.status(500).json({message:error.detail});
-            }
+        (error,results) => {
+          if (error) {
+            throw error;
+          }
             // Send success response
             response.status(201).json({ message: `User added with ID: ${results.rows[0].id}` });
         }
