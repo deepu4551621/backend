@@ -19,8 +19,7 @@ const Register = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = async (e) => {
-    e.preventDefault();
+  const handleSubmit = async () => {
     const toastId = toast.loading("Saving user data...");
     try {
         const response = await axios.post('https://backend-omega-orpin.vercel.app/signup', formData);
@@ -40,15 +39,15 @@ const Register = () => {
         toast.dismiss(toastId);
         if (error.response) {
             // Server responded with an error status code
-            console.error("Error registering:", error.response.data);
+            console.log("Error registering:", error.response.data);
             toast.error(error.response.data.message || 'An error occurred');
         } else if (error.request) {
             // The request was made but no response was received
-            console.error("No response received:", error.request);
+            console.log("No response received:", error.request);
             toast.error('No response received from server');
         } else {
             // Something happened in setting up the request that triggered an error
-            console.error("Request error:", error.message);
+            console.log("Request error:", error.message);
             toast.error('Request error: ' + error.message);
         }
     }
