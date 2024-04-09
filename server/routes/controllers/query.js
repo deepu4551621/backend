@@ -34,8 +34,8 @@ const pool = new Pool({
     );
 };
 
-const getCourse = (request, response) => {
-    pool.query("SELECT * FROM courses ORDER BY id ASC", (error, results) => {
+const getAllCourses = (request, response) => {
+    pool.query("SELECT * FROM courses ORDER BY course_id ", (error, results) => {
       if (error) {
         throw error;
       }
@@ -82,7 +82,7 @@ const getCourse = (request, response) => {
   
   module.exports = {
     createUser,
-    getCourse,
+    getAllCourses,
     getUserById,
     updateUser,
     deleteUser,
