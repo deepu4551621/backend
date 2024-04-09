@@ -6,27 +6,38 @@ import { RiLockPasswordLine } from 'react-icons/ri';
 import {BsPerson} from 'react-icons/bs';
 import {MdOutlineAlternateEmail} from 'react-icons/md';
 import {toast} from 'react-hot-toast'
+import { Link } from 'react-router-dom';
 
+// import PasswordValidator from '../components/pValidation';
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     name: '',
     email: '',
     password: '',
+    cpassword:''
   });
-  const [err,setErr]=useState('');
+  const [err,setErr]=useState({});
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    validateField(name, value);
+console.log(err)
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+   // Validate all fields before submission
+   validateAllFields();
+   // Proceed with form submission if no errors
+   if (!Object.values(formData).some(value => value === ''))  {
+       // Submit form data
+      //  console.log('Form submitted:', formData);
     const toastId = toast.loading("Saving user data...");
     try {
       const res = await axios.post('https://backend-omega-orpin.vercel.app/signup', formData);
         // const data =  await res.json();
         console.log("response from server",res );
-        
         if (res.status === 201) {
             // Registration successful
             setFormData({
@@ -36,15 +47,49 @@ const Register = () => {
             });
             toast.dismiss(toastId);
             toast.success('Registration Successful');
-            // navigate('/login');
+            navigate('/login');
         }
     } catch (e) {
       toast.dismiss(toastId);
       toast.error(e.response.data.message, {duration:3000})
-     console.log('error registering', e.response.data.message)
+    //  console.log('error registering', e.response.data.message)
     }
+  }
+};
+// error handling
+const validateField = (name, value) => {
+  // Write validation rules for each field
+  let error = '';
+  switch (name) {
+      case 'name':
+          // Example: Name should not be empty
+          error = value.trim() === '' ? 'Name is required' : '';
+          break;
+      case 'email':
+          // Example: Validate email format
+          error = !/^\S+@\S+\.\S+$/.test(value) ? 'Invalid email address' : '';
+          break;
+      case 'password':
+          // Example: Password should be at least 8 characters long
+          error = value.length < 8 ? 'Password must be at least 8 characters long' : '';
+          break;
+      case 'cpassword':
+          // Example: Confirm password should match password
+          error = value !== formData.password ? 'Passwords do not match' : '';
+          break;
+      default:
+          break;
+  }
+  // Update errors state for the current field
+  setErr({ ...err, [name]: error });
 };
 
+const validateAllFields = () => {
+  // Validate all fields when the form is submitted
+  for (const [name, value] of Object.entries(formData)) {
+      validateField(name, value);
+  }
+};
 
 
   return (
@@ -100,11 +145,15 @@ const Register = () => {
         />
       </div>
       {err && (
-      <p style={{ color: 'red', textAlign:'center' }}><BiError/>{err}</p>)}
+      <p style={{ color: 'red', textAlign:'center' }}>
+            {Object.values(err).some(error => error !== '') ? <BiError color='red' /> : null}
+        {err.password || err.name || err.email || err.cpassword}
+        </p>)}
       <div className="form-group">
-        <button type="submit" onClick={handleSubmit}>Register</button>
+        <button type="submit" className={Object.values(formData).some(value => value === '') ? 'disabled' : ''}  disabled={Object.values(formData).some(value => value === '')} onClick={handleSubmit}>Register</button>
       </div>
     </form>
+    <div className='lastDiv'><span>Already have an account!</span> <Link to='/login'>Login</Link></div>
   </div>
   );
 };

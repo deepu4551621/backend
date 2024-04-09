@@ -1,7 +1,7 @@
 const {Pool} = require('pg')
 const bcrypt =require('bcrypt')
 const pool = new Pool({
-    connectionString: process.env.DATABASE_URL,
+    connectionString: process.env.VERCELDB_URL,
     ssl: {
       rejectUnauthorized: false,
     },
@@ -34,8 +34,8 @@ const pool = new Pool({
     );
 };
 
-const getUsers = (request, response) => {
-    pool.query("SELECT * FROM users ORDER BY id ASC", (error, results) => {
+const getCourse = (request, response) => {
+    pool.query("SELECT * FROM courses ORDER BY id ASC", (error, results) => {
       if (error) {
         throw error;
       }
@@ -82,7 +82,7 @@ const getUsers = (request, response) => {
   
   module.exports = {
     createUser,
-    getUsers,
+    getCourse,
     getUserById,
     updateUser,
     deleteUser,

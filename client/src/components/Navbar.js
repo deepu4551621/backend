@@ -1,19 +1,25 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
-
+import { FaBookSkull } from "react-icons/fa6";
+import ProfileImageUploader from './profileSection';
 const Navbar = () => {
   const [isvisible, setVisible]=useState(false)
+  const [login, setLogin]=useState(false)
   return (
     <nav className='navbar'>
-        <Link onClick={()=>setVisible(true)} className='logo'><img src='#' alt='img'/>profile</Link>
+        <Link onMouseOver={()=>setVisible(true)}  className='logo'>
+        <FaBookSkull size={30}/><span>E-Learning Platform</span>
+        </Link>
         <ul>
-           <Link to='/login'>Login</Link>
-           <Link to='/signup'>Signup</Link>
+          {
+            login?<Link>Logout</Link>:<Link to='/login'>Login</Link>
+          }
         </ul>
         {
      isvisible&&(
-     <div style={styles.modal}>
-      <button onClick={()=>setVisible(false)}>Close</button>
+     <div style={styles.modal} onMouseLeave={()=>setVisible(false)}>
+      {/* <button onClick={()=>setVisible(false)}>Close</button> */}
+      <ProfileImageUploader/>
      </div>
      )
         }

@@ -1,0 +1,250 @@
+{
+    "courses": [
+      {
+        "_id": "course1",
+        "title": "Introduction to Python Programming",
+        "description": "Learn the basics of Python programming language.",
+        "author": "user1",
+        "chapters": [
+          {
+            "title": "Introduction to Python",
+            "modules": [
+              {
+                "title": "Getting Started with Python",
+                "content": "Introduction to the Python programming language, its history, and features."
+              },
+              {
+                "title": "Setting Up Python Environment",
+                "content": "Guide on setting up a Python development environment."
+              }
+            ]
+          },
+          {
+            "title": "Data Types and Control Structures",
+            "modules": [
+              {
+                "title": "Basic Data Types",
+                "content": "Explanation of basic data types in Python (int, float, string, etc.)."
+              },
+              {
+                "title": "Control Structures",
+                "content": "Understanding control structures such as if-else statements and loops."
+              }
+            ]
+          },
+          {
+            "title": "Functions and Modules",
+            "modules": [
+              {
+                "title": "Functions in Python",
+                "content": "Introduction to functions and function declaration in Python."
+              },
+              {
+                "title": "Using Modules",
+                "content": "How to use built-in and external modules in Python for additional functionality."
+              }
+            ]
+          }
+        ],
+        "createdAt": "2024-04-06T12:00:00.000Z",
+        "updatedAt": "2024-04-06T12:00:00.000Z"
+      },
+      {
+        "_id": "course2",
+        "title": "Web Development Fundamentals with HTML, CSS, and JavaScript",
+        "description": "Learn the basics of web development including HTML, CSS, and JavaScript.",
+        "author": "user2",
+        "chapters": [
+          {
+            "title": "Introduction to HTML",
+            "modules": [
+              {
+                "title": "HTML Basics",
+                "content": "Introduction to HTML, its structure, and basic tags."
+              },
+              {
+                "title": "Working with Forms",
+                "content": "Creating forms and handling user input in HTML."
+              }
+            ]
+          },
+          {
+            "title": "Styling with CSS",
+            "modules": [
+              {
+                "title": "CSS Syntax and Selectors",
+                "content": "Explanation of CSS syntax and various selector types."
+              },
+              {
+                "title": "Layout and Positioning",
+                "content": "Understanding CSS layout techniques and positioning."
+              }
+            ]
+          },
+          {
+            "title": "JavaScript Fundamentals",
+            "modules": [
+              {
+                "title": "Introduction to JavaScript",
+                "content": "Introduction to JavaScript language, its features, and use cases."
+              },
+              {
+                "title": "Working with DOM",
+                "content": "Manipulating the Document Object Model (DOM) using JavaScript."
+              }
+            ]
+          }
+        ],
+        "createdAt": "2024-04-06T13:00:00.000Z",
+        "updatedAt": "2024-04-06T13:00:00.000Z"
+      },
+      {
+        "_id": "course3",
+        "title": "Java Programming for Beginners",
+        "description": "Learn Java programming language from scratch.",
+        "author": "user3",
+        "chapters": [
+          {
+            "title": "Java Basics",
+            "modules": [
+              {
+                "title": "Getting Started with Java",
+                "content": "Introduction to Java, its history, and features."
+              },
+              {
+                "title": "Variables and Data Types",
+                "content": "Understanding variables, data types, and variable declaration in Java."
+              }
+            ]
+          },
+          {
+            "title": "Control Statements",
+            "modules": [
+              {
+                "title": "Decision Making with If-Else",
+                "content": "Using if-else statements for decision making in Java."
+              },
+              {
+                "title": "Looping with For and While",
+                "content": "Looping constructs in Java using for and while loops."
+              }
+            ]
+          },
+          {
+            "title": "Object-Oriented Programming in Java",
+            "modules": [
+              {
+                "title": "Classes and Objects",
+                "content": "Introduction to classes, objects, and class inheritance in Java."
+              },
+              {
+                "title": "Exception Handling",
+                "content": "Handling exceptions and error conditions in Java programs."
+              }
+            ]
+          }
+        ],
+        "createdAt": "2024-04-06T14:00:00.000Z",
+        "updatedAt": "2024-04-06T14:00:00.000Z"
+      },
+      {
+        "_id": "course4",
+        "title": "Introduction to Data Science with Python",
+        "description": "Learn the basics of data science using Python programming language.",
+        "author": "user4",
+        "chapters": [
+          {
+            "title": "Introduction to Data Science",
+            "modules": [
+              {
+                "title": "What is Data Science?",
+                "content": "Introduction to the field of data science and its applications."
+              },
+              {
+                "title": "Data Analysis Process",
+                "content": "Understanding the data analysis process and its components."
+              }
+            ]
+          },
+          {
+            "title": "Data Manipulation with Pandas",
+            "modules": [
+              {
+                "title": "Introduction to Pandas",
+                "content": "Introduction to the Pandas library for data manipulation in Python."
+              },
+              {
+                "title": "Data Cleaning and Transformation",
+                "content": "Techniques for cleaning and transforming data using Pandas."
+              }
+            ]
+          },
+          {
+            "title": "Data Visualization with Matplotlib",
+            "modules": [
+              {
+                "title": "Introduction to Matplotlib",
+                "content": "Introduction to the Matplotlib library for data visualization."
+              },
+              {
+                "title": "Creating Plots and Charts",
+                "content": "Creating various types of plots and charts using Matplotlib."
+              }
+            ]
+          }
+        ],
+        "createdAt": "2024-04-06T15:00:00.000Z",
+        "updatedAt": "2024-04-06T15:00:00.000Z"
+      },
+      {
+        "_id": "course5",
+        "title": "Introduction to Machine Learning",
+        "description": "Learn the basics of machine learning algorithms and techniques.",
+        "author": "user5",
+        "chapters": [
+          {
+            "title": "Introduction to Machine Learning",
+            "modules": [
+              {
+                "title": "What is Machine Learning?",
+                "content": "Introduction to machine learning, its types, and applications."
+              },
+              {
+                "title": "Supervised vs. Unsupervised Learning",
+                "content": "Understanding the difference between supervised and unsupervised learning."
+              }
+            ]
+          },
+          {
+            "title": "Regression Analysis",
+            "modules": [
+              {
+                "title": "Simple Linear Regression",
+                "content": "Introduction to simple linear regression and its implementation."
+              },
+              {
+                "title": "Multiple Linear Regression",
+                "content": "Understanding multiple linear regression and its applications."
+              }
+            ]
+          },
+          {
+            "title": "Classification Algorithms",
+            "modules": [
+              {
+                "title": "Decision Trees",
+                "content": "Introduction to decision trees and their use in classification."
+              },
+              {
+                "title": "K-Nearest Neighbors",
+                "content": "Understanding the K-Nearest Neighbors algorithm for classification."
+              }
+            ]
+          }
+        ],
+        "createdAt": "2024-04-06T16:00:00.000Z",
+        "updatedAt": "2024-04-06T16:00:00.000Z"
+      }
+    ]
+  }
+  

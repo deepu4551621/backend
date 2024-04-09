@@ -1,16 +1,18 @@
 import React from 'react'
 import { useLocation } from 'react-router-dom'
+import Courses from '../components/courses';
 const Home = () => {
   const location = useLocation()
   const data = location?.state;
-  const arr =[1,2,3]
-console.log("data", data);
   return (
-    <div>
-<h1>Home</h1>
+    <div className='home'>
    {
     data?<h1>{data.message}</h1>:null
    }
+   <h1>Courses We Offer</h1>
+   <div className='courseDiv'>
+   <Courses/>
+   </div>
     </div>
   )
 }

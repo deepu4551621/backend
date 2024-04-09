@@ -2,14 +2,15 @@ const express = require('express')
 const router = express.Router()
 const Home = require('./controllers/Home')
 const Login =require('./controllers/Login')
-// const hashpassword = require('./middlewares/hashpassword')
-const {createUser, getUserById, getUsers, deleteUser, updateUser} = require('./controllers/query')
+const AuthenticateToken = require('./middlewares/verifyToken')
+const {createUser, getUserById, getCourse, deleteUser, updateUser} = require('./controllers/query')
 
 router.get('/',Home)
 router.post('/login', Login)
 router.post('/signup', createUser)
-router.get("/users", getUsers);
-router.get("/user", getUserById);
-router.put("/updateuser", updateUser);
-router.delete("/deleteuser", deleteUser);
+router.get("/courses", getCourse);
+router.get("/profile",AuthenticateToken, getUserById);
+router.put("/profile", updateUser);
+router.put("/profile/updateuser", updateUser);
+router.delete("profile/deleteuser", deleteUser);
 module.exports=router;

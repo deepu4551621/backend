@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { RiLockPasswordLine } from 'react-icons/ri';
 import {MdOutlineAlternateEmail} from 'react-icons/md';
 import {BiError} from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
+import { Link } from 'react-router-dom';
+
 const Login = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -14,11 +16,21 @@ const Login = () => {
   const [err,setErr]=useState('')
 
   const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+    const { name, value } = e.target;
+    setFormData({ ...formData, [name]: value });
+    validateField(name, value);
+console.log(Object.values(err).length)
 };
-
+useEffect(()=>{
+  console.log("check errors", !Object.values(formData).some(value => value === '' ))
+  console.log("values",!Object.values(err)==='')
+  console.log('eror',err)
+},[err])
 const handleSubmit = async (e) => {
     e.preventDefault();
+    validateAllFields()
+    if (!Object.values(formData).some(value => value === '') ) {
+      // Submit form data
     const toastId = toast.loading('logging...');
     try {
         const response = await axios.post('https://backend-omega-orpin.vercel.app/login', formData);
@@ -41,10 +53,35 @@ const handleSubmit = async (e) => {
       toast.dismiss(toastId)
       toast.error(e.response.data.error, {duration:3000})
       console.log("ERROR:",e)
-
     }
+  }
 };
 
+// error handle
+const validateField = (name, value) => {
+  // Write validation rules for each field
+  let error = '';
+  switch (name) {
+    case 'email':
+      // Example: Validate email format
+      error = !/^\S+@\S+\.\S+$/.test(value) ? 'Invalid email address' : '';
+      break;
+    case 'password':
+        error = value.trim() === '' ? 'Password is required' : '';
+          break;
+      default:
+          break;
+  }
+  // Update errors state for the current field
+  setErr({ ...err, [name]: error });
+};
+
+const validateAllFields = () => {
+  // Validate all fields when the form is submitted
+  for (const [name, value] of Object.entries(formData)) {
+      validateField(name, value);
+  }
+};
 
   return (
     <div className='signup-container'>
@@ -75,11 +112,15 @@ const handleSubmit = async (e) => {
         />
       </div>
       {err && (
-      <p style={{ color: 'red', textAlign:'center' }}><BiError/>{err}</p>)}
+     <p style={{ color: 'red', textAlign:'center' }}>
+            {Object.values(err).some(error => error !== '') ? <BiError color='red' /> : null}
+        {err.password || err.email}
+        </p>)}
       <div className='form-group'>
-        <button type='submit' onClick={handleSubmit}>Login</button>
+        <button type='submit' className={Object.values(formData).some(value => value === '') ? 'disabled' : ''}  disabled={Object.values(formData).some(value => value === '')} onClick={handleSubmit}>Login</button>
       </div>
     </form>
+    <div className='lastDiv'><span>Don't have an account!</span> <Link to='/signup'>Signup</Link></div>
   </div>
   );
 };
