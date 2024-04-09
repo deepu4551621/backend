@@ -44,12 +44,13 @@ const getAllCourses = (request, response) => {
   };
   
   const getUserById = (request, response) => {
-    const id = request.query.id;
-    pool.query(`SELECT * FROM users WHERE id = ${id}`, (error, results) => {
-      if (error) {
-        throw error;
-      }
-      response.status(200).json(results.rows);
+    console.log('getuserid', request.user)
+    const userId = 13 // Retrieve user ID from req.user
+    pool.query(`SELECT * FROM users WHERE id = ${userId}`, (error, results) => {
+        if (error) {
+            throw error;
+        }
+        response.status(200).json(results.rows);
     });
   };
   

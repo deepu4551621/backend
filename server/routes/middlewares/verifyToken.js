@@ -13,11 +13,9 @@ const authenticateToken = (req, res, next) => {
         if (err) {
             return res.sendStatus(403); // Forbidden if token is invalid
         }
-        // req.user = user;
-        res.json(user)
+        req.user = user;
+        
         next(); // Proceed to the next middleware
     });
-
-    next()
 };
 module.exports = authenticateToken;

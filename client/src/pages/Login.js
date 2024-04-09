@@ -38,8 +38,7 @@ const handleSubmit = async (e) => {
     try {
         const response = await axios.post('https://backend-omega-orpin.vercel.app/login', formData);
          console.log('dataTjson', response, )
-        const isAuthenticated = response.data.success;
-        const userId = response.data.id
+        const {success, id} = response.data;
         if(response.status===200){
           setFormData({
             name: '',
@@ -48,7 +47,7 @@ const handleSubmit = async (e) => {
           });
           navigate('/')
          Cookie.set('Jalebi',response.data.accessToken )
-         dispatch(login({isAuthenticated, userId}))
+         dispatch(login({success, id}))
           toast.dismiss(toastId)
           toast.success('Login successFull',{
             position:'top-center',

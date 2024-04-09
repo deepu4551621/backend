@@ -3,7 +3,9 @@ import  Axios  from "axios";
 import { MdOutlineEdit } from "react-icons/md";
 import Cookie from 'js-cookie'
 import ProfileImageUploader from "../components/profileSection";
+import {useSelector} from 'react-redux'
 const Profile = () => {
+  const id = useSelector((state)=>state.user.id)
   const [edit, setEdit] = useState(true);
   const [editValue, setVal]=useState('')
   const [data, setData]=useState({});
@@ -31,7 +33,7 @@ if(token){
   try {
     await Axios.get('https://backend-omega-orpin.vercel.app/profile', axiosConfig).then((res)=>{
         setData(res.data)
-        console.log('data ',res.data)
+        console.log('data: ',res.data)
        })
   } catch (error) {
     console.log('authError', error)
