@@ -1,17 +1,42 @@
-import React, { useState } from "react";
-import ImageUploader from "react-image-upload";
+import React, { useEffect, useState } from "react";
+import  Axios  from "axios";
 import { MdOutlineEdit } from "react-icons/md";
-import { Link } from "react-router-dom";
-import { FaRegUser } from "react-icons/fa"
+import Cookie from 'js-cookie'
 import ProfileImageUploader from "../components/profileSection";
 const Profile = () => {
   const [edit, setEdit] = useState(true);
   const [editValue, setVal]=useState('')
+  const [data, setData]=useState({});
   const userData = {
     name: "Deepu",
     email: "D@gmail.com",
     courses: ["python", "java", "web dev", "ml", "javascript", "c++"],
   };
+
+  useEffect(()=>{
+const token= Cookie.get('Jalebi')
+if(token){
+    authenticate(token)
+}else{
+    console.log('token not available')
+}
+
+  },[])
+  const authenticate=async(token)=>{
+    const axiosConfig = {
+      headers: {
+        'Authorization': `Bearer ${token}`
+      }
+    };
+  try {
+    await Axios.get('https://backend-omega-orpin.vercel.app/profile', axiosConfig).then((res)=>{
+        setData(res.data)
+        console.log('data ',res.data)
+       })
+  } catch (error) {
+    console.log('authError', error)
+  }
+  }
   const handleChange = () => {
     console.log("changeprofile");
   };

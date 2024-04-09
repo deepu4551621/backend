@@ -1,3 +1,5 @@
+const secretKey = process.env.ACT_SECRETKEY
+const jwt = require('jsonwebtoken')
 // Authentication middleware
 const authenticateToken = (req, res, next) => {
     const authHeader = req.headers['authorization'];
@@ -11,9 +13,11 @@ const authenticateToken = (req, res, next) => {
         if (err) {
             return res.sendStatus(403); // Forbidden if token is invalid
         }
-        req.user = user;
+        // req.user = user;
+        res.json(user)
         next(); // Proceed to the next middleware
     });
+
     next()
 };
 module.exports = authenticateToken;

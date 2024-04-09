@@ -1,25 +1,25 @@
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaBookSkull } from "react-icons/fa6";
-import ProfileImageUploader from './profileSection';
+import Cookie from 'js-cookie'
 const Navbar = () => {
   const [isvisible, setVisible]=useState(false)
-  const [login, setLogin]=useState(false)
+  const logout=()=>{
+    Cookie.remove('Jalebi');
+  }
   return (
     <nav className='navbar'>
-        <Link onMouseOver={()=>setVisible(true)}  className='logo'>
+        <Link onMouseOver={()=>setVisible(true)}  onMouseLeave={()=>setVisible(false)} to='/profile' className='logo'>
         <FaBookSkull size={30}/><span>E-Learning Platform</span>
         </Link>
         <ul>
-          {
-            login?<Link>Logout</Link>:<Link to='/login'>Login</Link>
-          }
+            <Link onClick={logout}>Logout</Link>
+            <Link to='/login'>Login</Link>
         </ul>
         {
      isvisible&&(
-     <div style={styles.modal} onMouseLeave={()=>setVisible(false)}>
-      {/* <button onClick={()=>setVisible(false)}>Close</button> */}
-      <ProfileImageUploader/>
+     <div style={styles.modal}>
+      <h3>Click to view profile</h3>
      </div>
      )
         }
@@ -28,14 +28,15 @@ const Navbar = () => {
 }
 const styles={
   modal:{
-    backgroundColor:'#ccc',
+    backgroundColor:'#eee4',
+    color:'#fff',
     width:200,
-    height:200,
+    height:50,
     borderRadius:20,
     position:'absolute',
     left:10,
     top:60,
-
+    textAlign:'center'
   }
 }
 export default Navbar
