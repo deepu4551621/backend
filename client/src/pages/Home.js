@@ -1,55 +1,64 @@
-import React, { useEffect, useState } from 'react'
-import Courses from '../components/courses';
-import  axios  from 'axios';
-import toast from 'react-hot-toast'
-import Cookie from 'js-cookie'
+import React, { useEffect, useState } from 'react';
+import Courses from '../components/Courses';
+import axios from 'axios';
+import toast from 'react-hot-toast';
+import Cookie from 'js-cookie';
 import RefreshToken from '../components/refresh';
-const Home = () => {
-  const token= Cookie.get('Jalebi')
-    const refreshToken = Cookie.get('RefreshJalebi')
-  const [courses, setCourses]=useState([])
-  useEffect(()=>{
-   const toastId= toast.loading('loading...')
-    
-if(token){
-    authenticate(token)
-}else if(refreshToken){
 
-}
-else{
-    console.log('token not available')
-}
-toast.dismiss(toastId)
-  
-  },[])
-  const authenticate=async(token)=>{
-    const axiosConfig = {
-      headers: {
-        'Authorization': `Bearer ${token}`
+const Home = () => {
+  const token = Cookie.get('Jalebi');
+  const refreshToken = Cookie.get('RefreshJalebi');
+  const [courses, setCourses] = useState([]);
+
+  useEffect(() => {
+    const fetchCourses = async () => {
+      try {
+        const toastId = toast.loading('Loading courses...');
+
+        if (token) {
+          const axiosConfig = {
+            headers: {
+              'Authorization': `Bearer ${token}`
+            }
+          };
+
+          const response = await axios.get('https://backend-omega-orpin.vercel.app', axiosConfig);
+          setCourses(response.data);
+
+          toast.dismiss(toastId);
+        } else {
+          console.log('Token not available');
+        }
+      } catch (error) {
+        if (error.response && error.response.status === 401) {
+          try {
+            const newAccessToken = await RefreshToken(refreshToken);
+            if (newAccessToken) {
+              // Retry fetching courses with the new access token
+              await fetchCourses();
+            } else {
+              console.log('Failed to refresh token');
+            }
+          } catch (refreshError) {
+            console.log('Error refreshing token:', refreshError);
+          }
+        } else {
+          console.log('Error fetching courses:', error);
+        }
       }
     };
-  try {
-    await axios.get('https://backend-omega-orpin.vercel.app', axiosConfig).then((res)=>{
-        setCourses(res.data)
-        console.log('data: ',res.data)
-        
-       })
-  } catch (error) {
-    if(error.response&&error.response.status===401){
-      const newAccessToken = await RefreshToken(refreshToken);
-      return authenticate(newAccessToken)
-    }
-    console.log('authError', error)
-  }
-  }
+
+    fetchCourses();
+  }, [token, refreshToken]);
+
   return (
     <div className='home'>
-   <h1>Courses We Offer</h1>
-   <div className='courseDiv'>
-   <Courses courses={courses}/>
-   </div>
+      <h1>Courses We Offer</h1>
+      <div className='courseDiv'>
+        <Courses courses={courses} />
+      </div>
     </div>
-  )
-}
+  );
+};
 
-export default Home
+export default Home;

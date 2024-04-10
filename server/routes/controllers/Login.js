@@ -15,7 +15,7 @@ const pool = new Pool({
 const Login = async (req, res) => {
   try {
     const { email, password } = req.body;
-
+    console.log('login', email, password)
     // Check if the email exists
     const { rows } = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
     if (rows.length === 0) {
