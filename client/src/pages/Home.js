@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Courses from '../components/Courses';
+import Courses from '../components/courses';
 import axios from 'axios';
 import toast from 'react-hot-toast';
 import Cookie from 'js-cookie';

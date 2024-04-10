@@ -33,13 +33,12 @@ const Login = async (req, res) => {
     const { id,  } = user;
 
     // generate token
-    const accessToken = jwt.sign({userId: id, email:email }, accessTokenKey, { expiresIn: '10m' });
-    const refreshToken = jwt.sign(
-      { userId: id, email:email },
-      rsecretKey,
-      { expiresIn: '5d' }
+    const accessToken = jwt.sign({userId: id, email:email }, accessTokenKey, { expiresIn: '1h' });
+    const refreshToken = jwt.sign({ userId: id, email:email }, rsecretKey, { expiresIn: '5d' }
     );
-
+    res.cookie(accessToken, {httpOnly: true, secure: true, });
+    res.cookie( refreshToken, {httpOnly: true, secure: true, });
+    
 
     res.status(200).json({ success: true,id,accessToken, refreshToken});
   } catch (error) {

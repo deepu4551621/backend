@@ -24,6 +24,11 @@ const Login = () => {
     validateField(name, value);
 console.log(Object.values(err).length)
 };
+useEffect(()=>{
+  console.log("check errors", !Object.values(formData).some(value => value === '' ))
+  console.log("values",!Object.values(err)==='')
+  // console.log('eror',err)
+},[err])
 const handleSubmit = async (e) => {
     e.preventDefault();
     validateAllFields()
@@ -35,7 +40,6 @@ const handleSubmit = async (e) => {
          console.log('dataTjson', response, )
          const { success, id, accessToken, refreshToken } = response.data;
         if(response.status===200){
-          
             // Update cookies
             Cookie.set('Jalebi', accessToken);
             Cookie.set('RefreshJalebi', refreshToken);

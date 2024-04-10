@@ -17,6 +17,7 @@ const authenticateToken = (req, res, next) => {
             // Forbidden if token is invalid
         }
        req.user = user;
+       console.log('verify:',user)
     //    console.log("userData:",user)
        next()
     });
