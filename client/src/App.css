@@ -20,14 +20,16 @@ body{
   text-align: center;
 }
 .navbar ul{
-  flex: 3;
+  background-color: antiquewhite;
+  width: 158px;
   display: flex;
-  justify-content: flex-end;
   list-style: none;
   padding-right: 5px;
+  float: right;
 }
 .navbar ul a{
   text-decoration: none;
+  flex: 1;
 }
 
 
@@ -130,7 +132,7 @@ button[type="submit"] {
 .home {
   max-width: 1300px;
   margin: 20px auto; /* Set auto margin for top and bottom, and horizontal centering */
-  background-color: #666;
+  background-color: #66666669;
   border-radius: 10px;
   padding: 2px;
  

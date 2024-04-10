@@ -9,6 +9,7 @@ const Profile = () => {
   const [edit, setEdit] = useState(true);
   const [editValue, setVal]=useState('')
   const [data, setData]=useState({});
+  // const token = Cookie.get('Jalebi');
   const userData = {
     name: "Deepu",
     email: "D@gmail.com",
@@ -19,7 +20,6 @@ const Profile = () => {
     if(userId){
       getUserData(userId)
     }
-
   },[])
   const getUserData=async(id)=>{
   try {

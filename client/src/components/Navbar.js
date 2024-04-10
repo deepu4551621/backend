@@ -2,7 +2,9 @@ import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { FaBookSkull } from "react-icons/fa6";
 import Cookie from 'js-cookie'
+import {useSelector } from 'react-redux' 
 const Navbar = () => {
+  const isAuthenticated=useSelector(state=>state.user.isAuthenticated)
   const [isvisible, setVisible]=useState(false)
   const logout=()=>{
     Cookie.remove('Jalebi');
@@ -13,8 +15,12 @@ const Navbar = () => {
         <FaBookSkull size={30}/><span>E-Learning Platform</span>
         </Link>
         <ul>
-            <Link onClick={logout}>Logout</Link>
-            <Link to='/login'>Login</Link>
+        <Link to='/'>Home</Link>
+          {isAuthenticated?
+ <Link onClick={logout}>Logout</Link>:<Link to='/login'>Login</Link>
+          }
+          
+            
         </ul>
         {
      isvisible&&(

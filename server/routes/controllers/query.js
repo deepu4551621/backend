@@ -31,17 +31,18 @@ const createUser = async (request, response) => {
       response
         .status(201)
         .json({ message: `User added with ID: ${results.rows[0].id}` });
-    }
+      }
   );
 };
 
 const getAllCourses = (request, response) => {
+  console.log("getcourse:",request.user)
   pool.query("SELECT * FROM courses ORDER BY course_id ", (error, results) => {
     if (error) {
       throw error;
     }
-    response.status(200).json(results.rows);
-    console.log(results.rows);
+    response.status(200).json({userData:request.user, courseData:results.rows});
+    // console.log(results.rows);
   });
 };
 

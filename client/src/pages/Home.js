@@ -4,12 +4,14 @@ import axios from 'axios';
 import toast from 'react-hot-toast';
 import Cookie from 'js-cookie';
 import RefreshToken from '../components/refresh';
-
+import { login } from '../reducers/userSlice';
+import {useDispatch} from 'react-redux'
 const Home = () => {
+  const dispatch=useDispatch();
   const token = Cookie.get('Jalebi');
   const refreshToken = Cookie.get('RefreshJalebi');
   const [courses, setCourses] = useState([]);
-
+ const [user, setUser]=useState({});
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -23,8 +25,9 @@ const Home = () => {
           };
 
           const response = await axios.get('https://backend-omega-orpin.vercel.app', axiosConfig);
-          setCourses(response.data);
-
+          setCourses(response.data.courseData);
+          setUser(response.data.userData)
+          console.log('data:->', response.data)
           toast.dismiss(toastId);
         } else {
           console.log('Token not available');
@@ -55,7 +58,7 @@ const Home = () => {
     <div className='home'>
       <h1>Courses We Offer</h1>
       <div className='courseDiv'>
-        <Courses courses={courses} />
+        {/* <Courses courses={courses} /> */}
       </div>
     </div>
   );

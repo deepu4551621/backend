@@ -13,12 +13,10 @@ const authenticateToken = (req, res, next) => {
     jwt.verify(token, secretKey, (err, user) => {
         if (err) {
             // console.log("err403:",err)
-            return res.sendStatus(403); 
+            return res.status(403).json({ success: false, message: 'Failed to authenticate token' });
             // Forbidden if token is invalid
         }
        req.user = user;
-       console.log('verify:',user)
-    //    console.log("userData:",user)
        next()
     });
     

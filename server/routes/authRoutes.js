@@ -6,10 +6,10 @@ const AuthenticateToken = require('./middlewares/verifyToken')
 const {createUser,addCourse, getUserById, getAllCourses, deleteUser, updateUser} = require('./controllers/query')
 
 // router.get('/',Home)
-router.get("/", getAllCourses);
+router.get("/",AuthenticateToken, getAllCourses);
 router.post('/login', Login)
 router.post('/signup', createUser)
-router.get("/profile",AuthenticateToken, getUserById);
+router.get("/profile", getUserById);
 router.post("/addCourse", addCourse);
 router.put("/profile/updateuser", updateUser);
 router.delete("profile/deleteuser", deleteUser);
