@@ -36,14 +36,14 @@ const Login = async (req, res) => {
     const accessToken = jwt.sign({userId: id, email:email }, accessTokenKey, { expiresIn: '1h' });
     const refreshToken = jwt.sign({ userId: id, email:email }, rsecretKey, { expiresIn: '5d' }
     );
-    res.cookie(accessToken, {httpOnly: true, secure: true, });
-    res.cookie( refreshToken, {httpOnly: true, secure: true, });
+    res.cookie(accessToken, {httpOnly: true, secure: true, sameSite: 'none'});
+    res.cookie( refreshToken, {httpOnly: true, secure: true,sameSite: 'none' });
     
 
     res.status(200).json({ success: true,id,accessToken, refreshToken});
   } catch (error) {
     console.error('Error during login:', error);
-    res.status(500).json({message:error});
+    res.json({Error:error});
   }
 };
 
