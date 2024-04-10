@@ -47,6 +47,7 @@ const getAllCourses = (request, response) => {
 
 const getUserById = async (request, response) => {
   const id = request.query.id;
+  console.log('id',id)
   try {
     // Fetch courses associated with the user
     const userCoursesResult = await pool.query(
@@ -101,6 +102,22 @@ const deleteUser = (request, response) => {
     response.status(200).send(`User deleted with ID: ${id}`);
   });
 };
+const addCourse=async (request, response) => {
+  const { uid, cid } = request.body;
+  try {
+    // Insert the user ID and course ID into the user_courses table
+    await pool.query(
+      `INSERT INTO user_courses (user_id, course_id) VALUES ($1, $2)`,
+      [uid, cid]
+    );
+
+    response.status(200).json({ message: 'Course added successfully' });
+  } catch (error) {
+    console.error(error);
+    response.status(500).json({ message: 'Error adding course' });
+  }
+}
+
 
 module.exports = {
   createUser,
@@ -108,4 +125,5 @@ module.exports = {
   getUserById,
   updateUser,
   deleteUser,
+  addCourse,
 };

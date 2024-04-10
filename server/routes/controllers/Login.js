@@ -30,10 +30,10 @@ const Login = async (req, res) => {
       return res.status(401).json({ login: false, error: 'Incorrect credentials' });
     }
     // If passwords match, generate and return an access token
-    const { id, name, } = user;
+    const { id,  } = user;
 
     // generate token
-    const accessToken = jwt.sign({userId: id,name:name, email:email }, accessTokenKey, { expiresIn: '10m' });
+    const accessToken = jwt.sign({userId: id, email:email }, accessTokenKey, { expiresIn: '10m' });
     const refreshToken = jwt.sign(
       { userId: id, email:email },
       rsecretKey,

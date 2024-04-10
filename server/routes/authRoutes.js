@@ -3,14 +3,14 @@ const router = express.Router()
 const RefreshToken = require('./middlewares/refreshToken')
 const Login =require('./controllers/Login')
 const AuthenticateToken = require('./middlewares/verifyToken')
-const {createUser, getUserById, getAllCourses, deleteUser, updateUser} = require('./controllers/query')
+const {createUser,addCourse, getUserById, getAllCourses, deleteUser, updateUser} = require('./controllers/query')
 
 // router.get('/',Home)
 router.get("/",AuthenticateToken, getAllCourses);
 router.post('/login', Login)
 router.post('/signup', createUser)
 router.get("/profile", getUserById);
-router.put("/profile", updateUser);
+router.post("/addCourse", addCourse);
 router.put("/profile/updateuser", updateUser);
 router.delete("profile/deleteuser", deleteUser);
 router.post('/refresh-token', RefreshToken)

@@ -16,7 +16,10 @@ const Profile = () => {
   };
 
   useEffect(()=>{
-getUserData(userId)
+    if(userId){
+      getUserData(userId)
+    }
+
   },[])
   const getUserData=async(id)=>{
   try {

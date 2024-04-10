@@ -24,11 +24,6 @@ const Login = () => {
     validateField(name, value);
 console.log(Object.values(err).length)
 };
-useEffect(()=>{
-  console.log("check errors", !Object.values(formData).some(value => value === '' ))
-  console.log("values",!Object.values(err)==='')
-  console.log('eror',err)
-},[err])
 const handleSubmit = async (e) => {
     e.preventDefault();
     validateAllFields()
@@ -38,23 +33,26 @@ const handleSubmit = async (e) => {
     try {
         const response = await axios.post('https://backend-omega-orpin.vercel.app/login', formData);
          console.log('dataTjson', response, )
-        const {success, id} = response.data;
+         const { success, id, accessToken, refreshToken } = response.data;
         if(response.status===200){
-          setFormData({
-            name: '',
-            email: '',
-            password: '',
-          });
-          navigate('/')
-         Cookie.set('Jalebi',response.data.accessToken )
-         Cookie.set('RefreshJalebi',response.data.refreshToken )
-         dispatch(login({success, id}))
-          toast.dismiss(toastId)
-          toast.success('Login successFull',{
-            position:'top-center',
-            duration:3000
-          })
-        }
+          
+            // Update cookies
+            Cookie.set('Jalebi', accessToken);
+            Cookie.set('RefreshJalebi', refreshToken);
+            
+            // Dispatch the login action
+            dispatch(login({ success, id }));
+            
+            // Navigate to home page
+            navigate('/');
+            
+            toast.dismiss(toastId);
+            toast.success('Login successful', {
+              position: 'top-center',
+              duration: 3000
+            });
+          }
+        
     } catch (e) {
       toast.dismiss(toastId)
       toast.error(e.response.data.error, {duration:3000})
