@@ -38,11 +38,10 @@ const handleSubmit = async (e) => {
     try {
         const response = await axios.post('https://backend-omega-orpin.vercel.app/login', formData);
          console.log('dataTjson', response, )
-         const { success, id, accessToken, refreshToken } = response.data;
+         const { success, id, accessToken } = response.data;
         if(response.status===200){
             // Update cookies
             Cookie.set('Jalebi', accessToken);
-            Cookie.set('RefreshJalebi', refreshToken);
             
             // Dispatch the login action
             dispatch(login({ success, id }));

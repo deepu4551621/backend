@@ -2,7 +2,6 @@ const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const accessTokenKey = process.env.ACT_SECRETKEY;
-const rsecretKey = process.env.RSECRET_KEY
 // const comparePassword = require('../middlewares/compareHpassword');
 
 const pool = new Pool({
@@ -15,7 +14,7 @@ const pool = new Pool({
 const Login = async (req, res) => {
   try {
     const { email, password } = req.body;
-    console.log('login', email, password)
+
     // Check if the email exists
     const { rows } = await pool.query(`SELECT * FROM users WHERE email = $1`, [email]);
     if (rows.length === 0) {
@@ -30,20 +29,14 @@ const Login = async (req, res) => {
       return res.status(401).json({ login: false, error: 'Incorrect credentials' });
     }
     // If passwords match, generate and return an access token
-    const { id,  } = user;
-
-    // generate token
-    const accessToken = jwt.sign({userId: id, email:email }, accessTokenKey, { expiresIn: '1h' });
-    const refreshToken = jwt.sign({ userId: id, email:email }, rsecretKey, { expiresIn: '5d' }
-    );
-    res.cookie(accessToken, {httpOnly: true, secure: true, sameSite: 'none'});
-    res.cookie( refreshToken, {httpOnly: true, secure: true,sameSite: 'none' });
+    const { id, name, } = user;
+    const accessToken = jwt.sign({ id, name, email }, accessTokenKey, { expiresIn: '1d' });
+    res.cookie('actk', accessToken, {httpOnly: true, secure: true, sameSite: 'strict' });
     
-
-    res.status(200).json({ success: true,id,accessToken, refreshToken});
+    res.status(200).json({ success: true, id,accessToken});
   } catch (error) {
     console.error('Error during login:', error);
-    res.json({Error:error});
+    res.status(500).json({message:error.response});
   }
 };
 
