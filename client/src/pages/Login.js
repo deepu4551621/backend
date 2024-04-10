@@ -47,6 +47,7 @@ const handleSubmit = async (e) => {
           });
           navigate('/')
          Cookie.set('Jalebi',response.data.accessToken )
+         Cookie.set('RefreshJalebi',response.data.refreshToken )
          dispatch(login({success, id}))
           toast.dismiss(toastId)
           toast.success('Login successFull',{

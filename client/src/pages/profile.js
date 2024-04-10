@@ -5,7 +5,7 @@ import Cookie from 'js-cookie'
 import ProfileImageUploader from "../components/profileSection";
 import {useSelector} from 'react-redux'
 const Profile = () => {
-  const id = useSelector((state)=>state.user.id)
+  const userId = useSelector((state)=>state.user.userId)
   const [edit, setEdit] = useState(true);
   const [editValue, setVal]=useState('')
   const [data, setData]=useState({});
@@ -16,24 +16,13 @@ const Profile = () => {
   };
 
   useEffect(()=>{
-const token= Cookie.get('Jalebi')
-if(token){
-    authenticate(token)
-}else{
-    console.log('token not available')
-}
-
+getUserData(userId)
   },[])
-  const authenticate=async(token)=>{
-    const axiosConfig = {
-      headers: {
-        'Authorization': `Bearer ${token}`
-      }
-    };
+  const getUserData=async(id)=>{
   try {
-    await Axios.get('https://backend-omega-orpin.vercel.app/profile', axiosConfig).then((res)=>{
+    await Axios.get(`https://backend-omega-orpin.vercel.app/profile?id=${id}`).then((res)=>{
         setData(res.data)
-        console.log('data: ',res.data)
+        console.log('userData: ',res.data)
        })
   } catch (error) {
     console.log('authError', error)

@@ -2,6 +2,7 @@ const { Pool } = require('pg');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const accessTokenKey = process.env.ACT_SECRETKEY;
+const rsecretKey = process.env.RSECRET_KEY
 // const comparePassword = require('../middlewares/compareHpassword');
 
 const pool = new Pool({
@@ -30,10 +31,17 @@ const Login = async (req, res) => {
     }
     // If passwords match, generate and return an access token
     const { id, name, } = user;
-    const accessToken = jwt.sign({ id, name, email }, accessTokenKey, { expiresIn: '1h' });
-    res.cookie('actk', accessToken, { maxAge: 3600000, httpOnly: true, secure: true, sameSite: 'strict' });
-    
-    res.status(200).json({ success: true,id,accessToken});
+
+    // generate token
+    const accessToken = jwt.sign({userId: id,name:name, email:email }, accessTokenKey, { expiresIn: '10m' });
+    const refreshToken = jwt.sign(
+      { userId: id, email:email },
+      rsecretKey,
+      { expiresIn: '5d' }
+    );
+
+
+    res.status(200).json({ success: true,id,accessToken, refreshToken});
   } catch (error) {
     console.error('Error during login:', error);
     res.status(500).json({message:error});
