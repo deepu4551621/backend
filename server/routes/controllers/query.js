@@ -41,7 +41,7 @@ const getAllCourses = (request, response) => {
     if (error) {
       throw error;
     }
-    response.status(200).json({userData:request.user, courseData:results.rows});
+    response.status(200).json({success:true,userData:request.user, courseData:results.rows});
     // console.log(results.rows);
   });
 };
@@ -56,7 +56,7 @@ const getUserById = async (request, response) => {
       [id]
     );
     if (userCoursesResult.rowCount === 0) {
-      return response.json({
+      return response.status(404).json({
         message: "You do not have any courses enrolled yet",
       });
     }

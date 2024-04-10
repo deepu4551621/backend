@@ -11,7 +11,7 @@ const Home = () => {
   const token = Cookie.get('Jalebi');
   const refreshToken = Cookie.get('RefreshJalebi');
   const [courses, setCourses] = useState([]);
- const [user, setUser]=useState({});
+
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -25,10 +25,15 @@ const Home = () => {
           };
 
           const response = await axios.get('https://backend-omega-orpin.vercel.app', axiosConfig);
-          setCourses(response.data.courseData);
-          setUser(response.data.userData)
-          console.log('data:->', response.data)
+         if(response.status===200){
+          const success=true//temperary
+          const {userData, courseData,} = response.data
+          setCourses(courseData);
+        
+          console.log('data:->', response)
+          dispatch(login({success, userData}))
           toast.dismiss(toastId);
+         }
         } else {
           console.log('Token not available');
         }
@@ -58,7 +63,7 @@ const Home = () => {
     <div className='home'>
       <h1>Courses We Offer</h1>
       <div className='courseDiv'>
-        {/* <Courses courses={courses} /> */}
+        <Courses courses={courses} />
       </div>
     </div>
   );
