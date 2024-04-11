@@ -21,11 +21,11 @@ const Login = () => {
     validateField(name, value);
 console.log(Object.values(err).length)
 };
-useEffect(()=>{
-  console.log("check errors", !Object.values(formData).some(value => value === '' ))
-  console.log("values",!Object.values(err)==='')
-  // console.log('eror',err)
-},[err])
+// useEffect(()=>{
+//   console.log("check errors", !Object.values(formData).some(value => value === '' ))
+//   console.log("values",!Object.values(err)==='')
+//   // console.log('eror',err)
+// },[err])
 const handleSubmit = async (e) => {
     e.preventDefault();
     validateAllFields()
@@ -52,7 +52,7 @@ const handleSubmit = async (e) => {
     } catch (e) {
       toast.dismiss(toastId)
       toast.error(e.response.data.error, {duration:3000})
-      console.log("ERROR:",e)
+      // console.log("ERROR:",e)
     }
   }
 };

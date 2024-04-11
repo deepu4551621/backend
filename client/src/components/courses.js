@@ -1,9 +1,9 @@
 import  Axios  from "axios";
 import {useSelector} from 'react-redux'
 const Courses = ({courses, isvisible}) => {
-  const uid = useSelector((state)=>state.user.useId)
-  // console.log("d", data.courses);
-const handleEnroll=async(cid)=>{
+  const uid = useSelector((state)=>state.user?.userData?.id)
+  // console.log("bredux", mycourses);
+const handleEnroll=async( cid)=>{
   console.log('uid', uid, '\ncid', cid)
     try {
       await Axios.post('https://backend-omega-orpin.vercel.app/addCourse')

@@ -148,6 +148,11 @@ button[type="submit"] {
   align-items: center;
 }
 /* profile page  */
+.p-container{
+  display:'flex';
+  flex-direction:column;
+   background-color:antiquewhite
+}
 .profile {
   display: flex;
   justify-content: space-evenly;
@@ -182,7 +187,7 @@ button[type="submit"] {
 /* Style for the data container */
 .div3 {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* Three columns */
+  grid-template-columns: repeat(2, 1fr); /* Three columns */
   gap: 10px; /* Gap between columns */
 }
 

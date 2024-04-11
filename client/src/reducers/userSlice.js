@@ -6,18 +6,15 @@ export const userSlice = createSlice({
   initialState: {
     isAuthenticated: false,
     userData: null,
+    mycourse:[],
     error: null,
   },
   reducers: {
     loginSuccess: (state, action) => {
       state.isAuthenticated = true;
       state.userData = action.payload.userData;
+      state.mycourse = action.payload.courseData;
       state.error = null;
-    },
-    loginFailure: (state, action) => {
-      state.isAuthenticated = false;
-      state.userData = null;
-      state.error = action.payload.error;
     },
     logout: (state) => {
       state.isAuthenticated = false;
@@ -27,6 +24,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { loginSuccess, loginFailure, logout } = userSlice.actions;
+export const { loginSuccess, logout } = userSlice.actions;
 
 export default userSlice.reducer;

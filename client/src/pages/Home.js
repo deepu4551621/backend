@@ -15,7 +15,7 @@ const navigate=useNavigate()
   const dispatch=useDispatch();
   const token = Cookie.get('Jalebi');
   const refreshToken = Cookie.get('RefreshJalebi');
-
+// console.log('allcourses', availableCourses)
   useEffect(() => {
     const fetchCourses = async () => {
       try {
@@ -47,14 +47,12 @@ const navigate=useNavigate()
               // Retry fetching courses with the new access token
               await fetchCourses();
             } else {
-              console.log('Failed to refresh token');
+              // console.log('Failed to refresh token');
             }
           } catch (refreshError) {
-            console.log('Error refreshing token:', refreshError);
+            // console.log('Error refreshing token:', refreshError);
           }
-        } else {
-          console.log('Error fetching courses:', error);
-        }
+        } 
       }
     };
     if(!isAuthenticated){

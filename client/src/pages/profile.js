@@ -6,16 +6,18 @@ import { FaRegUser } from "react-icons/fa";
 import { IoCameraOutline } from "react-icons/io5";
 import Upload from "../components/upload";
 import { useSelector, useDispatch } from "react-redux";
-// import { enroll } from "../reducers/courseSlice";
+import { loginSuccess } from "../reducers/userSlice";
 import Courses from "../components/courses";
 import {useNavigate} from 'react-router-dom'
+
 const Profile = () => {
   const navigate=useNavigate()
-  
+  const dispatch=useDispatch()
   const { isAuthenticated, userData, error } = useSelector((state) => state.user);
-  const [data, setData] = useState([]);
+  // const [data, setData] = useState({});
   const [errorMsg, setError]=useState('')
   const [modal, setModal]=useState(false)
+  const [mycourse, setCourse]=useState([])
   useEffect(() => {
     const getUserData = async (id) => {
       try {
@@ -23,39 +25,52 @@ const Profile = () => {
         await Axios.get(
           `https://backend-omega-orpin.vercel.app/profile?id=${id}`
         ).then((res) => {
-          setData(res.data.courseData);
-        //  dispatch(enroll(res.data.courseData))
-          // console.log("data: ", res.data.courseData);
+          const userData =res.data.userData[0]
+          const courseData =res.data.courseData
+          setCourse(courseData)
+         dispatch(loginSuccess({userData, courseData}))
+        //  setData(userData[0])
+          // console.log("data: ", res.data);
           toast.dismiss(toastId)
         });
       } catch (e) {
-        console.log("Error", e.response.data.message);
+        // console.log("Error", e.response.data.message);
         setError(e.response.data.message)
       }
     };
     if (isAuthenticated) {
+      // const userId = userData?.id||userData[0].id
       getUserData(userData.id);
     }else{
     navigate('/login')
     }
-  }, [isAuthenticated]);
-const handleClick=()=>{
-  setModal(true)
-}
+ 
+  }, [userData.profile_url]);
+  // console.log("data--",data)
+  const closeModal = () => {
+    setModal(false);
+  };
   return (
     <>
-    <div style={{display:'flex', flexDirection:'column',backgroundColor:'antiquewhite'}}>
+    <div className="p-container">
       <div className="profile">
         <div className="div">
-        <div className='profile'>
-        <div className='div'>
-          <span className="profileImg" >
+        <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>
+          {
+            userData&&userData?.profile_url?(
+              <img style={{borderRadius:10}} src={userData?.profile_url}  />
+            ):(
+              <>
+<       span className="profileImg" >
           <FaRegUser size={80} />
         </span>
-        <span className="icon"onClick={handleClick} >
+        </>
+            )
+          }
+           <span className="icon" onClick={() => setModal(true)} >
           <IoCameraOutline size={30} />
         </span>
-        </div>
+        
     </div>
         </div>
         <div className="div">
@@ -63,25 +78,17 @@ const handleClick=()=>{
           <div className="div3">
             <div>Name</div>
             <div>Email</div>
-            <div >My Courses</div>
-
-            {/* Data row */}
-            {/* Assuming userData is an object containing name, email, and courses */}
             <div>{userData?.name}</div>
             <div>{userData?.email}</div>
-            <div>
-          
-            {errorMsg}
-            </div>
           </div>
         </div>
         </div>
         {
-          data?(
+          userData?(
             <>
             <h1 style={{textAlign:'center'}}>Enrolled Courses</h1>
             <div style={{display:'flex', flexWrap:'wrap', justifyContent:'center', alignItems:'center'}}>
-            <Courses courses={data} isvisible={true}/>
+            <Courses courses={mycourse} isvisible={true}/>
             </div>
             </>
           ):{errorMsg}
@@ -89,9 +96,9 @@ const handleClick=()=>{
       </div>
 {
   modal&&(
-    <div style={{backgroundColor:'grey', position:'absolute', top:50,
-    left:30, width:500, height:500, borderRadius:10}}>
-      <Upload/>
+    <div style={{backgroundColor:'rgba(0, 0, 0, 0.2)', position:'absolute', top:50,
+    left:30, width:280, height:460, borderRadius:10}}>
+      <Upload closeModal={closeModal} id={userData?.id}/>
     </div>
     
   )
