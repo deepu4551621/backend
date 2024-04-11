@@ -6,6 +6,7 @@ const pool = new Pool({
     rejectUnauthorized: false,
   },
 });
+// create new user start
 const createUser = async (request, response) => {
   const { name, email, password } = request.body;
   const saltRounds = 10; // Number of salt rounds (higher is more secure but slower)
@@ -34,7 +35,9 @@ const createUser = async (request, response) => {
       }
   );
 };
-
+// create new user end
+// ***********************************************
+// provides available courses data after authentication start
 const getAllCourses = (request, response) => {
   console.log("getcourse:",request.user)
   pool.query("SELECT * FROM courses ORDER BY course_id ", (error, results) => {
@@ -45,7 +48,10 @@ const getAllCourses = (request, response) => {
     // console.log(results.rows);
   });
 };
+// provides available courses data after authentication end
+// ****************************************************
 
+//when user goes to profile page  start
 const getUserById = async (request, response) => {
   const id = request.query.id;
   console.log('id',id)
@@ -80,33 +86,45 @@ const getUserById = async (request, response) => {
     response.status(500).json({ message: "Internal server error" });
   }
 };
+//when user goes to profile page  end
+// ***************************************************
 
+// update user info start
 const updateUser = (request, response) => {
   const id = request.query.id;
   const { name, email } = request.body;
-
+//  console.log('id', id, '\nname', name, '\nemail', email)
   pool.query(
     "UPDATE users SET name = $1, email = $2 WHERE id = $3",
     [name, email, id],
     (error, results) => {
       if (error) {
-        throw error;
+        console.error("Error updating user:", error);
+        response.status(500).json({ error: "Internal server error" });
+        return;
       }
-      response.status(200).send(`User modified with ID: ${id}`);
+      response.status(200).json({ message: `User with ID ${id} updated successfully` });
     }
   );
 };
+// update end
+// *****************************************************
 
+
+// delete user start
 const deleteUser = (request, response) => {
   const id = request.query.id;
 
-  pool.query(`DELETE FROM users WHERE id = ${id}`, (error, results) => {
+  pool.query('DELETE FROM users WHERE id = $1', [id], (error, results) => {
     if (error) {
-      throw error;
+      return response.status(401).json({error:'Error Deleting Account'})
     }
     response.status(200).send(`User deleted with ID: ${id}`);
   });
 };
+// delete user ends
+// *******************************************************
+
 const addCourse=async (request, response) => {
   const { uid, cid } = request.body;
   try {

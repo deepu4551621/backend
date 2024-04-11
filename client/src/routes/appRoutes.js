@@ -4,6 +4,7 @@ import Home from '../pages/Home'
 import Login from '../pages/Login'
 import Signup from '../pages/Signup'
 import Profile from '../pages/profile'
+import Setting from '../pages/setting'
 import { Toaster } from 'react-hot-toast'
 const AppRoutes = () => {
     
@@ -15,6 +16,7 @@ const AppRoutes = () => {
         <Route path='/login' element={<Login/>} />
         <Route path='/signup' element={<Signup/>} />
         <Route path='/profile' element={<Profile/>}/>
+        <Route path='/profile/setting' element={<Setting/>}/>
      </Routes>
      </>
   )

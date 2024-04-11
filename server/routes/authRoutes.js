@@ -7,14 +7,15 @@ const AuthenticateToken = require('./middlewares/verifyToken')
 const upload= require('./middlewares/multer')
 const {createUser,addCourse, getUserById, getAllCourses, deleteUser, updateUser} = require('./controllers/query')
 const uploadImage =require('./controllers/upload')
-
+const verifyUser =  require('./controllers/verifyuser')
 router.get("/",AuthenticateToken, getAllCourses);
 router.post('/login', Login)
 router.post('/signup', createUser)
 router.get("/profile", getUserById);
 router.post("/addCourse", addCourse);
-router.put("/profile/updateuser", updateUser);
-router.delete("profile/deleteuser", deleteUser);
+router.put("/updateuser", updateUser);
+router.post("/verifyuser", verifyUser);
+router.delete("/deleteuser", deleteUser);
 router.post('/refresh-token', RefreshToken)
 router.post('/uploadImage', upload.single('profileImage'),uploadImage );
 module.exports=router;
