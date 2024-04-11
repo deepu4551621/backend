@@ -1,117 +1,101 @@
 import React, { useEffect, useState } from "react";
 import Axios from "axios";
 import { MdOutlineEdit } from "react-icons/md";
-import Cookie from "js-cookie";
-import ProfileImageUploader from "../components/profileSection";
-import { useSelector } from "react-redux";
+import toast from 'react-hot-toast'
+import { FaRegUser } from "react-icons/fa";
+import { IoCameraOutline } from "react-icons/io5";
+import Upload from "../components/upload";
+import { useSelector, useDispatch } from "react-redux";
+// import { enroll } from "../reducers/courseSlice";
+import Courses from "../components/courses";
+import {useNavigate} from 'react-router-dom'
 const Profile = () => {
-  const user = useSelector((state) => state.user.userData);
-  const [edit, setEdit] = useState(true);
-  const [editValue, setVal] = useState("");
+  const navigate=useNavigate()
+  
+  const { isAuthenticated, userData, error } = useSelector((state) => state.user);
   const [data, setData] = useState([]);
   const [errorMsg, setError]=useState('')
-  const userData = {
-    name: "Deepu",
-    email: "D@gmail.com",
-    courses: ["python", "java", "web dev", "ml", "javascript", "c++"],
-  };
-
+  const [modal, setModal]=useState(false)
   useEffect(() => {
-    console.log("profile:", user.id);
-    if (user.id) {
-      getUserData(user.id);
+    const getUserData = async (id) => {
+      try {
+        const toastId=toast.loading('loading data...')
+        await Axios.get(
+          `https://backend-omega-orpin.vercel.app/profile?id=${id}`
+        ).then((res) => {
+          setData(res.data.courseData);
+        //  dispatch(enroll(res.data.courseData))
+          // console.log("data: ", res.data.courseData);
+          toast.dismiss(toastId)
+        });
+      } catch (e) {
+        console.log("Error", e.response.data.message);
+        setError(e.response.data.message)
+      }
+    };
+    if (isAuthenticated) {
+      getUserData(userData.id);
+    }else{
+    navigate('/login')
     }
-  }, []);
-  const getUserData = async (id) => {
-    try {
-      await Axios.get(
-        `https://backend-omega-orpin.vercel.app/profile?id=${id}`
-      ).then((res) => {
-        setData(res.data?.courseData);
-        console.log("getuserData: ", res);
-      });
-    } catch (error) {
-      console.log("authError", error.response.data.message);
-    }
-  };
-  const handleChange = () => {
-    console.log("changeprofile");
-  };
-  const handleEdit = (id) => {
-    setEdit(!edit);
-    setVal(id);
-  };
+  }, [isAuthenticated]);
+const handleClick=()=>{
+  setModal(true)
+}
   return (
     <>
+    <div style={{display:'flex', flexDirection:'column',backgroundColor:'antiquewhite'}}>
       <div className="profile">
         <div className="div">
-          <ProfileImageUploader />
+        <div className='profile'>
+        <div className='div'>
+          <span className="profileImg" >
+          <FaRegUser size={80} />
+        </span>
+        <span className="icon"onClick={handleClick} >
+          <IoCameraOutline size={30} />
+        </span>
+        </div>
+    </div>
         </div>
         <div className="div">
           <h1>My Profile</h1>
           <div className="div3">
             <div>Name</div>
             <div>Email</div>
-            <div>My Courses</div>
+            <div >My Courses</div>
 
             {/* Data row */}
             {/* Assuming userData is an object containing name, email, and courses */}
-            <div>{user?.name}</div>
-            <div>{user?.email}</div>
+            <div>{userData?.name}</div>
+            <div>{userData?.email}</div>
             <div>
-              {data ? (
-                data.map((course, index) => (
-                  <ul
-                    style={{
-                      listStyle: "none",
-                      padding: 0,
-                      display: "flex",
-                      justifyContent: "space-between",
-                    }}
-                    key={index}
-                  >
-                    <li key={course}>{course}</li>
-                    <span
-                      style={{ cursor: "pointer" }}
-                      onClick={() => handleEdit(index)}
-                    >
-                      <MdOutlineEdit />
-                    </span>
-                  </ul>
-                ))
-              ) : (
-                <p>{errorMsg}</p>
-              )}
+          
+            {errorMsg}
             </div>
           </div>
         </div>
-      </div>
-      {edit && (
-        <div
-          style={{
-            backgroundColor: "grey",
-            width: 400,
-            height: 100,
-            borderRadius: 10,
-            position: "relative",
-            left: "40%",
-          }}
-        >
-          <div style={{ margin: 10, padding: 20 }}>
-            <input
-              type="text"
-              value={userData.courses[editValue]}
-              onChange={(e) => {
-                // Assuming userData.courses is an array and editValue is the index of the course to edit
-                const updatedCourses = [...userData.courses];
-                updatedCourses[editValue] = e.target.value;
-                setVal({ ...userData, courses: updatedCourses });
-              }}
-            />
-            <button>Update</button>
-          </div>
         </div>
-      )}
+        {
+          data?(
+            <>
+            <h1 style={{textAlign:'center'}}>Enrolled Courses</h1>
+            <div style={{display:'flex', flexWrap:'wrap', justifyContent:'center', alignItems:'center'}}>
+            <Courses courses={data} isvisible={true}/>
+            </div>
+            </>
+          ):{errorMsg}
+        }
+      </div>
+{
+  modal&&(
+    <div style={{backgroundColor:'grey', position:'absolute', top:50,
+    left:30, width:500, height:500, borderRadius:10}}>
+      <Upload/>
+    </div>
+    
+  )
+}
     </>
   );
 };

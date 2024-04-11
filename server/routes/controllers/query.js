@@ -41,7 +41,7 @@ const getAllCourses = (request, response) => {
     if (error) {
       throw error;
     }
-    response.status(200).json({success:true,userData:request.user, courseData:results.rows});
+    response.status(200).json({userData:request.user, courseData:results.rows});
     // console.log(results.rows);
   });
 };
@@ -57,7 +57,7 @@ const getUserById = async (request, response) => {
     );
     if (userCoursesResult.rowCount === 0) {
       return response.status(404).json({
-        message: "You do not have any courses enrolled yet",
+        message: "Currently, there are no courses enrolled under your account",
       });
     }
     // Extract course IDs from the result
@@ -69,8 +69,12 @@ const getUserById = async (request, response) => {
       `SELECT * FROM courses WHERE course_id = ANY($1)`,
       [courseIds]
     );
+    const user = await pool.query(
+      `SELECT * FROM users WHERE id = $1`,
+      [id]
+    );
     // Send user ID and course data as the response
-    response.status(200).json({ userId: id, courseData: courseDataResult.rows });
+    response.status(200).json({ userData: user.rows, courseData: courseDataResult.rows });
   } catch (error) {
     console.error("Error fetching user courses:", error);
     response.status(500).json({ message: "Internal server error" });

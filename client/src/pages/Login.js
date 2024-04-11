@@ -5,12 +5,9 @@ import {MdOutlineAlternateEmail} from 'react-icons/md';
 import {BiError} from 'react-icons/bi';
 import { useNavigate } from 'react-router-dom';
 import toast from 'react-hot-toast';
-import {useDispatch} from 'react-redux'
-import { login } from '../reducers/userSlice';
 import { Link } from 'react-router-dom';
 import Cookie from 'js-cookie'
 const Login = () => {
-  const dispatch=useDispatch();
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
     email: '',
@@ -37,15 +34,11 @@ const handleSubmit = async (e) => {
     const toastId = toast.loading('logging...');
     try {
         const response = await axios.post('https://backend-omega-orpin.vercel.app/login', formData);
-         console.log('dataTjson', response, )
-         const { success, id, accessToken } = response.data;
+        //  console.log('dataTjson', response, )
+         const { accessToken } = response.data;
         if(response.status===200){
             // Update cookies
             Cookie.set('Jalebi', accessToken);
-            
-            // Dispatch the login action
-            dispatch(login({ success, id }));
-            
             // Navigate to home page
             navigate('/');
             

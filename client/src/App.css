@@ -160,10 +160,12 @@ button[type="submit"] {
   padding: 10px;
   margin: 10px;
   display: flex;
-  justify-content: center;
-  align-items: center;
   flex-direction: column;
   flex-grow: 1;
+}
+.profile .div .profileImg{
+  display: flex;
+  justify-content: center;
 }
 .profile .div .icon{
   cursor: pointer;

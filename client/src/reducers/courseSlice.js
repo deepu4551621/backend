@@ -1,27 +1,30 @@
 import { createSlice } from '@reduxjs/toolkit';
 
-export const cartSlice = createSlice({
+export const courseSlice = createSlice({
   name: 'course',
   initialState: {
-    enrolledCourses: [] // Array to hold enrolled courses
+    userId: null, // Initially set to null
+    enrolledCourses: [], // Array to hold enrolled courses
+    availableCourses:[],
   },
   reducers: {
     enroll: (state, action) => {
-      const { courseId } = action.payload;
-      // Check if the course is not already enrolled
-      if (!state.enrolledCourses.includes(courseId)) {
-        state.enrolledCourses.push(courseId); // Enroll the course
-      }
+      state.enrolledCourses = action.payload;
     },
-    disenRoll: (state, action) => {
-      const { courseId } = action.payload;
-      // Filter out the removed course from enrolled courses
-      state.enrolledCourses = state.enrolledCourses.filter(id => id !== courseId);
+    // disenroll: (state, action) => {
+    //   const { userId, courseId } = action.payload;
+    //   // If the userId matches the current userId in state, disenroll the course
+    //   if (userId === state.userId) {
+    //     state.enrolledCourses = state.enrolledCourses.filter(id => id !== courseId);
+    //   }
+    // },
+    setAvailableCourses: (state, action) => {
+      state.availableCourses = action.payload; // Set all available courses
     },
-    // Add other reducers as needed
+  
   },
 });
 
-export const { enroll, disenRoll } = cartSlice.actions;
+export const { enroll, setAvailableCourses  } = courseSlice.actions;
 
-export default cartSlice.reducer;
+export default courseSlice.reducer;

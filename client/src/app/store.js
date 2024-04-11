@@ -4,6 +4,6 @@ import userSlice from '../reducers/userSlice'
 export default configureStore({
     reducer: {
       user: userSlice,
-      myCourse: courseSlice,
+      data: courseSlice,
     },
   });
