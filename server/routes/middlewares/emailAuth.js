@@ -1,7 +1,6 @@
 const { Resend } = require("resend");
-const resendApi =process.env.RESEND_API
 const MYEMAIL =process.env.EMAIL
-const resendInstance = new Resend(resendApi);
+const resendInstance = new Resend(process.env.RESEND_API);
 const EmailAuth=async(req,res,next)=>{
     const {name, email} = req.body
     console.log(name, email)
