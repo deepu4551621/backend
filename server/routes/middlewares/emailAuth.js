@@ -5,7 +5,8 @@ const resendInstance = new Resend(resendApi);
 const EmailAuth=async(req,res,next)=>{
     const {name, email} = req.body
     console.log(name, email)
-    const verificationLink = "https://backend-omega-orpin.vercel.app/verifyEmail";
+    try {
+        const verificationLink = "https://backend-omega-orpin.vercel.app/verifyEmail";
     const data = await resendInstance.emails.send({
       from: "Acme <onboarding@resend.dev>",
       to: MYEMAIL,
@@ -36,6 +37,9 @@ const EmailAuth=async(req,res,next)=>{
       `,
     })
       res.status(200).json(data);
+    } catch (error) {
+        console.log('Error', error)
+    }
 }
 
 module.exports =EmailAuth
