@@ -16,6 +16,9 @@ export const userSlice = createSlice({
       state.mycourse = action.payload.courseData;
       state.error = null;
     },
+    updateCourse:(state,action)=>{
+      state.mycourse = action.payload.courseData;
+    },
     logout: (state) => {
       state.isAuthenticated = false;
       state.userData = null;
@@ -24,6 +27,6 @@ export const userSlice = createSlice({
   },
 });
 
-export const { loginSuccess, logout } = userSlice.actions;
+export const { loginSuccess, logout, updateCourse } = userSlice.actions;
 
 export default userSlice.reducer;

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import axios from 'axios';
 import {  useNavigate } from 'react-router-dom'; // Change import to useHistory
 import {BiError} from 'react-icons/bi';
-import { RiLockPasswordLine } from 'react-icons/ri';
+import { RiLockPasswordLine,RiAdminLine } from 'react-icons/ri';
 import {BsPerson} from 'react-icons/bs';
 import {MdOutlineAlternateEmail} from 'react-icons/md';
 import {toast} from 'react-hot-toast'
@@ -15,7 +15,8 @@ const Register = () => {
     name: '',
     email: '',
     password: '',
-    cpassword:''
+    cpassword:'',
+    role: 'user',
   });
   const [err,setErr]=useState({});
   const handleChange = (e) => {
@@ -143,6 +144,13 @@ const validateAllFields = () => {
           onChange={handleChange}
           required
         />
+      </div>
+      <div className="form-group">
+      <span className='icon'><RiAdminLine/></span>
+      <select name="role" value={formData.role} onChange={handleChange}>
+        <option value="user">User</option>
+        <option value="admin">Admin</option>
+      </select>
       </div>
       {err && (
       <p style={{ color: 'red', textAlign:'center' }}>

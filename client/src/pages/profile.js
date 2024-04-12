@@ -9,48 +9,49 @@ import toast from 'react-hot-toast'
 import { useSelector, useDispatch } from "react-redux";
 import { loginSuccess } from "../reducers/userSlice";
 import Courses from "../components/courses";
-
+import Cookie from 'js-cookie'
 import EditUserForm from "../components/editForm";
 import Upload from "../components/upload";
 
 const Profile = () => {
   const navigate=useNavigate()
   const dispatch=useDispatch()
-  const { isAuthenticated, userData } = useSelector((state) => state.user);
-  // const [data, setData] = useState({});
+  const { isAuthenticated, userData,mycourse  } = useSelector((state) => state.user);
+  const token = Cookie.get('Jalebi')
   const [errorMsg, setError]=useState('')
   const [modal, setModal]=useState(false)
   const [modal2, setModal2]=useState(false)
-  const [mycourse, setCourse]=useState([])
+  const [course, setCourse]=useState([])
+
   useEffect(() => {
     const getUserData = async (id) => {
       try {
-        const toastId=toast.loading('loading data...')
+        const toastId=toast.loading('loading data...', {position:'top-center'})
         await Axios.get(
           `https://backend-omega-orpin.vercel.app/profile?id=${id}`
         ).then((res) => {
           const userData =res.data.userData[0]
           const courseData =res.data.courseData
           setCourse(courseData)
-         dispatch(loginSuccess({userData, courseData}))
-        //  setData(userData[0])
-          // console.log("data: ", res.data);
           toast.dismiss(toastId)
+         dispatch(loginSuccess({userData, courseData}))
+          
         });
       } catch (e) {
-        // console.log("Error", e.response.data.message);
-        setError(e.response.data.message)
+       setError(e.response.data.message)
       }
     };
-    if (isAuthenticated) {
-      // const userId = userData?.id||userData[0].id
-      getUserData(userData.id);
+    if (token) {
+      console.log("cd",mycourse?.length)
+      if(!mycourse){
+        getUserData(userData.id);
+      }
     }else{
     navigate('/login')
     }
  
-  }, [userData.profile_url]);
-  // console.log("data--",data)
+  }, [token, userData?.profile_url]);
+  // console.log("data--",mycourse)
   const closeModal = () => {
     setModal(false);
     setModal2(false);
@@ -78,6 +79,7 @@ const Profile = () => {
            <span className="icon" onClick={() => setModal(true)} >
           <IoCameraOutline size={30} />
         </span>
+        <span>{userData?.roles}</span>
     </div>
         </div>
         <div className="div">
@@ -88,20 +90,23 @@ const Profile = () => {
             <div>{userData?.name}</div>
             <div>{userData?.email}</div>
           </div>
-          <span onClick={()=>setModal2(true)} style={{display:'flex', justifyContent:'flex-end', padding:10, cursor:'pointer'}}><MdOutlineEdit color="purple" size={25}/></span>
-          <Link to='/profile/setting'  style={{display:'flex', justifyContent:'flex-end', padding:10, cursor:'pointer'}}><IoSettingsOutline color="black" size={25}/></Link>
+          <span  onClick={userData?.roles==='user' ? null : () => setModal2(true)} 
+          style={{display:'flex', justifyContent:'flex-end', padding:10, cursor:'pointer'}}><MdOutlineEdit color={userData?.roles==='user' ? 'grey' : 'purple'} size={25}/></span>
+          {
+           <Link to={userData?.roles === 'user' ? null : '/profile/setting'} style={{display:'flex', justifyContent:'flex-end', padding:10, cursor:'pointer'}}><IoSettingsOutline color="black" size={25}/></Link>
+          }
+         
         </div>
         </div>
-        {
-          userData?(
-            <>
-            <h1 style={{textAlign:'center'}}>Enrolled Courses</h1>
+      
+          <>
+          <h1 style={{textAlign:'center'}}>Enrolled Courses</h1>
+          {  mycourse&&mycourse?.length>0?(
             <div style={{display:'flex', flexWrap:'wrap', justifyContent:'center', alignItems:'center'}}>
-            <Courses courses={mycourse} isvisible={true}/>
+            <Courses courses={mycourse} isvisible={true} deletebtn={true}/>
             </div>
-            </>
-          ):{errorMsg}
-        }
+            ):<p style={{textAlign:'center'}}>{errorMsg}</p> }
+         </>
       </div>
 {
   modal&&(

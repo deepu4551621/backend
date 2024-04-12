@@ -29,8 +29,9 @@ const Login = async (req, res) => {
       return res.status(401).json({ login: false, error: 'Incorrect credentials' });
     }
     // If passwords match, generate and return an access token
-    const { id, name, } = user;
-    const accessToken = jwt.sign({ id, name, email }, accessTokenKey, { expiresIn: '1d' });
+    const { id, name,roles } = user;
+    // console.log('user:', user)
+    const accessToken = jwt.sign({ id, name, email, roles }, accessTokenKey, { expiresIn: '1d' });
     res.cookie('actk', accessToken, {httpOnly: true, secure: true, sameSite: 'strict' });
     
     res.status(200).json({ success: true, id,accessToken});

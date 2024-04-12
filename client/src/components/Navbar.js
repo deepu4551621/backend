@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useLocation } from 'react-router-dom'
 import { FaBookSkull } from "react-icons/fa6";
 import Cookie from 'js-cookie'
 import {useSelector , useDispatch} from 'react-redux' 
@@ -7,29 +7,38 @@ import { logout } from '../reducers/userSlice';
 const Navbar = () => {
   const isAuthenticated=useSelector(state=>state.user.isAuthenticated)
   const dispatch=useDispatch();
-  const [isvisible, setVisible]=useState(false)
+  const location = useLocation();
+  const { pathname } = location;
   const handleLogout=()=>{
-    // Cookie.remove('Jalebi');
     dispatch(logout())
+    Cookie.remove('Jalebi');
   }
   return (
     <nav className='navbar'>
-        <Link onMouseOver={()=>setVisible(true)}  onMouseLeave={()=>setVisible(false)} to='/profile' className='logo'>
+        <Link to='/profile' className='logo'>
         <FaBookSkull size={30}/><span>E-Learning Platform</span>
         </Link>
         <ul>
-        <Link to='/'>Home</Link>
-          {isAuthenticated?
- <Link onClick={handleLogout}>Logout</Link>:<Link to='/login'>Login</Link>
+          {
+            !pathname==='/'&&<Link to='/'>Home</Link>
+          }
+          
+        
+          {isAuthenticated? (
+           <>
+            <Link onClick={handleLogout}>Logout</Link>
+            {
+             pathname==='/profile'?<Link to='/'>Home</Link>:<Link to='/profile'>Profile</Link>
+          }</> )
+          
+          :(
+            <>
+            <Link to='/signup'>Signup</Link>
+            <Link to='/login'>Login</Link>
+            </>
+          )
           }
         </ul>
-        {
-     isvisible&&(
-     <div style={styles.modal}>
-      <h3>Click to view profile</h3>
-     </div>
-     )
-        }
     </nav>
   )
 }

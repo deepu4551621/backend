@@ -20,6 +20,10 @@ if(!isAuthenticated){
 Cookie.remove('Jalebi')
 navigate('/login')
 }
+else if(userData?.roles==='user'){
+  navigate('/profile')
+}
+
   }, [isAuthenticated])
   const closeModal = () => {
     setModal(false);

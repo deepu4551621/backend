@@ -1,0 +1,9 @@
+
+@media (max-width:425px) {
+    .p-container .profile{
+        flex-direction: column;
+    }
+    .navbar{
+        justify-content: center;
+    }
+}

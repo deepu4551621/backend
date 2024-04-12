@@ -8,7 +8,8 @@ const pool = new Pool({
 });
 // create new user start
 const createUser = async (request, response) => {
-  const { name, email, password } = request.body;
+  const { name, email, password , role} = request.body;
+  // console.log('role',role, '\nname', name)
   const saltRounds = 10; // Number of salt rounds (higher is more secure but slower)
   const hashedPassword = await bcrypt.hash(password, saltRounds);
 
@@ -22,8 +23,8 @@ const createUser = async (request, response) => {
   }
   // Insert user into the database with hashed password
   pool.query(
-    `INSERT INTO users (name, email, password) VALUES ($1, $2, $3) RETURNING id`,
-    [name, email, hashedPassword],
+    `INSERT INTO users (name, email, password, roles) VALUES ($1, $2, $3, $4) RETURNING id`,
+    [name, email, hashedPassword, role],
     (error, results) => {
       if (error) {
         throw error;
@@ -39,7 +40,6 @@ const createUser = async (request, response) => {
 // ***********************************************
 // provides available courses data after authentication start
 const getAllCourses = (request, response) => {
-  console.log("getcourse:",request.user)
   pool.query("SELECT * FROM courses ORDER BY course_id ", (error, results) => {
     if (error) {
       throw error;
@@ -125,21 +125,65 @@ const deleteUser = (request, response) => {
 // delete user ends
 // *******************************************************
 
+// enroll in course
 const addCourse=async (request, response) => {
   const { uid, cid } = request.body;
+  // console.log('uid', uid, '\ncid', cid)
   try {
     // Insert the user ID and course ID into the user_courses table
-    await pool.query(
+     await pool.query(
       `INSERT INTO user_courses (user_id, course_id) VALUES ($1, $2)`,
       [uid, cid]
     );
-
-    response.status(200).json({ message: 'Course added successfully' });
+    const result = await pool.query(
+      `SELECT course_id FROM user_courses WHERE user_id = $1`,
+      [uid]
+    );
+   const courseIds=  result.rows.map(row => row.course_id);
+   const courseDataResult = await pool.query(
+    `SELECT * FROM courses WHERE course_id = ANY($1)`,
+    [courseIds]
+  );
+    response.status(200).json({courseData:courseDataResult.rows, message: 'Course added successfully' });
   } catch (error) {
-    console.error(error);
-    response.status(500).json({ message: 'Error adding course' });
+    if (error.code === '23505') {
+      response.status(409).json({ message: 'Course already exists' });
+    }
+    response.status(500).json({ error: 'Error adding course try again after some' });
   }
 }
+
+// delete usercourse
+const deleteCourse = async (request, response) => {
+  const { uid, cid } = request.body;
+
+  console.log('uid', uid, '\ncid', cid)
+    try {
+      // Fetch courses associated with the user
+    // const courseCount = await pool.query(
+    //   `SELECT * FROM user_courses WHERE user_id = $1`,
+    //   [uid]
+    // );
+    // if (courseCount.rowCount === 0) {
+    //   return response.status(404).json({
+    //     message: "course Already Deleted",
+    //   });
+    // }
+     const result= await pool.query(
+        `DELETE FROM user_courses WHERE user_id = $1 AND course_id = $2`,
+        [uid, cid],  );
+        if (result.rowCount === 1) {
+          // If rowCount is 1, it means one row was deleted successfully
+          response.status(200).json({ message: 'Course deleted successfully' });
+        } else {
+          // If rowCount is not 1, it means no row was deleted (maybe course was not found)
+          response.status(404).json({ message: 'Course not found or already deleted' });
+        }
+    } catch (error) {
+      console.log('Error deleting course:', error);
+      response.status(500).json({ error: 'Error deleting course' });
+    }
+};
 
 
 module.exports = {
@@ -149,4 +193,5 @@ module.exports = {
   updateUser,
   deleteUser,
   addCourse,
+  deleteCourse
 };
