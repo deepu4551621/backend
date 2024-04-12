@@ -8,7 +8,7 @@ const {createUser,addCourse, getUserById, getAllCourses, deleteUser,deleteCourse
 const uploadImage =require('./controllers/upload')
 const verifyUser =  require('./controllers/verifyuser')
 const EmailAuth = require('./middlewares/emailAuth')
-const VerifyEmail = require('./controllers/verifyEmail')
+// const VerifyEmail = require('./controllers/verifyEmail')
 // all routes
 router.get("/",AuthenticateToken, getAllCourses);
 router.post('/login', Login)
@@ -21,5 +21,5 @@ router.delete("/deleteuser", deleteUser);
 router.delete("/deleteCourse", deleteCourse);
 router.post('/refresh-token', RefreshToken)
 router.post('/uploadImage', upload.single('profileImage'),uploadImage );
-router.get("/verifyEmail", VerifyEmail);
+// router.get("/verifyEmail", VerifyEmail);
 module.exports=router;
