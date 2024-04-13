@@ -7,12 +7,12 @@ const upload= require('./middlewares/multer')
 const {createUser,addCourse, getUserById, getAllCourses, deleteUser,deleteCourse, updateUser} = require('./controllers/query')
 const uploadImage =require('./controllers/upload')
 const verifyUser =  require('./controllers/verifyuser')
-const EmailAuth = require('./middlewares/emailAuth')
-// const VerifyEmail = require('./controllers/verifyEmail')
+// const EmailAuth = require('./middlewares/emailAuth')
+
 // all routes
 router.get("/",AuthenticateToken, getAllCourses);
 router.post('/login', Login)
-router.post('/signup',EmailAuth, createUser)
+router.post('/signup', createUser)
 router.get("/profile", getUserById);
 router.post("/addCourse", addCourse);
 router.put("/updateuser", updateUser);
