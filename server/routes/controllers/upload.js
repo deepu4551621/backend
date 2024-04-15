@@ -9,7 +9,7 @@ const pool = new Pool({
 
 const uploadImage = (req, res) => {
     const id = req.body.id
-    console.log("formdata", req.body.id)
+    console.log("formdata", req.body)
     cloudinary.uploader.upload(req.file.path, function(err, result){
         if(err){
             console.log('23/uploadimage/backend', err)

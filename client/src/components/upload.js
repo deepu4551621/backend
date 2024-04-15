@@ -10,30 +10,32 @@ const SingleImageUploader = ({closeModal, id }) => {
     
   };
 
-  const upload = async(e) => {
-    e.preventDefault(); 
-   const toastId= toast.loading('loading..',{
-    position:'top-left'
-  })
-  
-  const formData = new FormData();
-  formData.append('profileImage', image);
-  formData.append('id', id);
-  console.log('form', formData.values, formData); 
-   await axios.post("https://backend-omega-orpin.vercel.app/uploadImage", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data", 
-        },
-      })
-      .then((response) => {
-        console.log("Image uploaded successfully:", response.data);
-        toast.success(response.data.message)
-        toast.dismiss(toastId)
-      })
-      .catch((error) => {
-        console.error("Error during image upload:", error);
-      });
-      closeModal()
+  const upload = async (e) => {
+    e.preventDefault();
+
+    try {
+      const toastId = toast.loading('Uploading...', { position: 'top-left' });
+
+      const formData = new FormData();
+      formData.append('profileImage', image);
+      formData.append('id', id);
+
+      const response = await axios.post(
+        "https://backend-omega-orpin.vercel.app/uploadImage",formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+        }
+      );
+
+      toast.success(response.data.message);
+      toast.dismiss(toastId);
+      closeModal();
+    } catch (error) {
+      console.error("Error during image upload:", error);
+      toast.error("Failed to upload image. Please try again later.");
+    }
   };
 const handleClick=()=>{
   closeModal()
