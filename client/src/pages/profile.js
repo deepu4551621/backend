@@ -35,7 +35,7 @@ const Profile = () => {
           setCourse(res.data?.isVerified)
           toast.dismiss(toastId)
          dispatch(loginSuccess({userData, courseData}))
-          console.log("profile:",res.data)
+          // console.log("profile:",res.data)
         });
       } catch (e) {
        setError(e.response.data.message)

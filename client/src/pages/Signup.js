@@ -17,7 +17,7 @@ const Register = () => {
     cpassword:'',
     role: 'user',
   });
-  const [isOtpSent, setOptSent]=useState(false)
+
   const [err,setErr]=useState({});
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -92,9 +92,7 @@ const validateAllFields = () => {
   }
 };
 
-const OTPSEND=()=>{
-  setOptSent(true)
-}
+
   return (
     <div className="signup-container">
     <h2>Signup</h2>

@@ -8,7 +8,7 @@ const VerifyOtpPage = ({ email }) => {
   const [emailVerified, setEmailVerified] = useState(false);
   const onComplete = async (otp) => {
     try {
-      const response = await axios.post('http://localhost:5000/user/verifyOtp', {
+      const response = await axios.post('https://backend-omega-orpin.vercel.app/user/verifyOtp', {
         otp: otp, // Use the OTP passed to the onComplete function
         email: email,
       });
@@ -32,7 +32,7 @@ const VerifyOtpPage = ({ email }) => {
     }
     // Send OTP to backend
     try {
-      const response = await axios.post('http://localhost:5000/user/saveOtp', {
+      const response = await axios.post('https://backend-omega-orpin.vercel.app/user/saveOtp', {
         otp: generatedOtp, // Use the generated OTP
         email: email,
       });
