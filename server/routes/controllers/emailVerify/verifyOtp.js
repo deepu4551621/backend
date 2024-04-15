@@ -8,14 +8,14 @@ const pool = new Pool({
 
 const VerifyOtp = async (req, res) => {
   const { email, otp } = req.body;
-  console.log("userInputOTP",otp,'\nemail' ,email);
+  // console.log("userInputOTP",otp,'\nemail' ,email);
   try {
     // Check if email, OTP, and isVerified match the ones stored in the database
     const otpVerified = await pool.query(
       `SELECT * FROM verify WHERE email = $1 AND otp = $2`, // Adjust the condition based on your needs
       [email, otp]
     );
-    console.log('isverified', otpVerified.rows.length);
+    // console.log('isverified', otpVerified.rows.length);
 
     if (otpVerified.rows.length > 0) {
       const updateResult = await pool.query(
@@ -25,7 +25,7 @@ const VerifyOtp = async (req, res) => {
       // OTP verification successful
       res.status(200).json({ success: true,updateResult, message: 'Email verified successfully' });
     } else {
-      console.log('notveridied', otpVerified.rowCount);
+      // console.log('notveridied', otpVerified.rowCount);
       // OTP verification failed
       res.status(409).json({ success :false, message:'OTP is not verified' });
     }

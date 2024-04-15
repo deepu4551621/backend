@@ -42,9 +42,9 @@ const Profile = () => {
       }
     };
     if (token) {
-      if(!mycourse){
+      // if(!mycourse){
         getUserData(userData.id);
-      }
+      // }
     }else{
     navigate('/login')
     }

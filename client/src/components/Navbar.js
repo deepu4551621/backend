@@ -41,17 +41,5 @@ const Navbar = () => {
     </nav>
   );
 };
-const styles = {
-  modal: {
-    backgroundColor: "#eee4",
-    color: "#fff",
-    width: 200,
-    height: 50,
-    borderRadius: 20,
-    position: "absolute",
-    left: 10,
-    top: 60,
-    textAlign: "center",
-  },
-};
+
 export default Navbar;

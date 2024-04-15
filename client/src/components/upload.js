@@ -6,7 +6,7 @@ const SingleImageUploader = ({closeModal, id }) => {
   const [image, setImage] = useState();
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
-    console.log('img', image); 
+    console.log('img', e.target.files[0]); 
     
   };
 
