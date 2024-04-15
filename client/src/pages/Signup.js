@@ -7,8 +7,7 @@ import {BsPerson} from 'react-icons/bs';
 import {MdOutlineAlternateEmail} from 'react-icons/md';
 import {toast} from 'react-hot-toast'
 import { Link } from 'react-router-dom';
-
-// import PasswordValidator from '../components/pValidation';
+import VerifyOtpPage from './verifyOTP';
 const Register = () => {
   const navigate = useNavigate();
   const [formData, setFormData] = useState({
@@ -18,6 +17,7 @@ const Register = () => {
     cpassword:'',
     role: 'user',
   });
+  const [isOtpSent, setOptSent]=useState(false)
   const [err,setErr]=useState({});
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -92,7 +92,9 @@ const validateAllFields = () => {
   }
 };
 
-
+const OTPSEND=()=>{
+  setOptSent(true)
+}
   return (
     <div className="signup-container">
     <h2>Signup</h2>
@@ -154,9 +156,10 @@ const validateAllFields = () => {
       </div>
       {err && (
       <p style={{ color: 'red', textAlign:'center' }}>
-            {Object.values(err).some(error => error !== '') ? <BiError color='red' /> : null}
+            {Object.values(err).some(error => error !== '') ? <BiError color='red' /> :null}
         {err.password || err.name || err.email || err.cpassword}
         </p>)}
+        {formData.email ? <VerifyOtpPage  email={formData.email} />:null}
       <div className="form-group">
         <button type="submit" className={Object.values(formData).some(value => value === '') ? 'disabled' : ''}  disabled={Object.values(formData).some(value => value === '')} onClick={handleSubmit}>Register</button>
       </div>

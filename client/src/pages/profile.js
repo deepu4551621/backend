@@ -21,7 +21,7 @@ const Profile = () => {
   const [errorMsg, setError]=useState('')
   const [modal, setModal]=useState(false)
   const [modal2, setModal2]=useState(false)
-  const [course, setCourse]=useState([])
+  const [isverified, setCourse]=useState(null)
 
   useEffect(() => {
     const getUserData = async (id) => {
@@ -32,24 +32,23 @@ const Profile = () => {
         ).then((res) => {
           const userData =res.data.userData[0]
           const courseData =res.data.courseData
-          setCourse(courseData)
+          setCourse(res.data?.isVerified)
           toast.dismiss(toastId)
          dispatch(loginSuccess({userData, courseData}))
-          
+          console.log("profile:",res.data)
         });
       } catch (e) {
        setError(e.response.data.message)
       }
     };
     if (token) {
-      console.log("cd",mycourse?.length)
       if(!mycourse){
         getUserData(userData.id);
       }
     }else{
     navigate('/login')
     }
- 
+ console.log('check',isverified)
   }, [token, userData?.profile_url]);
   // console.log("data--",mycourse)
   const closeModal = () => {
@@ -61,7 +60,6 @@ const Profile = () => {
   return (
     <>
     <div className="p-container">
-
       <div className="profile">
         <div className="div">
         <div style={{display:'flex', flexDirection:'column', alignItems:'center'}}>

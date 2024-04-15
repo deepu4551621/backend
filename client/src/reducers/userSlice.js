@@ -21,7 +21,9 @@ export const userSlice = createSlice({
     },
     logout: (state) => {
       state.isAuthenticated = false;
-      state.userData = null;
+      state.userData.id = null;
+      state.userData.roles=null;
+      state.mycourse = []
       state.error = null;
     },
   },

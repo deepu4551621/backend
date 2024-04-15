@@ -8,7 +8,7 @@ const Pagination=()=>{
     const startIndex = (currentPage - 1) * coursePerPage;
     const endIndex = startIndex + coursePerPage;
     const currentCourse = availableCourses.slice(startIndex, endIndex);
-  console.log('ab', currentCourse)
+  // console.log('ab', currentCourse)
     const handlePageChange = (pageNumber) => {
       setCurrentPage(pageNumber);
     };
